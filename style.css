@@ -1,19 +1,11 @@
-/* 기본 모바일 최적화 설정 */
-html {
-    box-sizing: border-box;
-    font-size: 16px;
-    -webkit-text-size-adjust: 100%;
-}
-
-*, *:before, *:after {
-    box-sizing: inherit;
-}
+html { box-sizing: border-box; -webkit-text-size-adjust: 100%; }
+*, *:before, *:after { box-sizing: inherit; }
 
 body {
     margin: 0;
     padding: 0;
+    background-color: #fdfdfd; /* 밝은 회색 배경으로 여백 강조 */
     font-family: -apple-system, sans-serif;
-    background-color: #ffffff;
     display: flex;
     justify-content: center;
 }
@@ -21,79 +13,68 @@ body {
 .container {
     width: 100%;
     max-width: 480px;
-    padding: 20px 15px;
+    padding: 40px 30px; /* 상하좌우 넉넉한 여백 부여 */
     text-align: center;
 }
 
-/* 3:4 비율을 고정하고 내부 요소를 겹치는 핵심 박스 */
+header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+
 .photo-wrapper {
     width: 100%;
-    max-width: 360px; /* 모바일 적정 너비 */
-    margin: 0 auto 20px auto;
+    margin-bottom: 30px;
 }
 
 .photo-zone {
     position: relative;
     width: 100%;
-    aspect-ratio: 3 / 4; /* 가로3:세로4 고정 */
-    background: #000;
-    border-radius: 12px;
+    aspect-ratio: 3 / 4;
+    background: #eee;
+    border-radius: 8px; /* 부드러운 여백 느낌 */
     overflow: hidden;
-    display: grid; /* 내부 요소 겹치기를 위한 그리드 */
+    display: grid;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
 }
 
-.photo-zone img{
-    width: 100vw;
-    aspect-ratio: 3 / 4; /* 가로3:세로4 고정 */
-}
-
-/* 비디오와 프레임 이미지가 그리드의 같은 칸(0,0)을 차지하게 함 */
-video#video, .frame-overlay {
-    position: absolute;
-    grid-area: 1 / 1 / 2 / 2; /* 1행 1열에 겹쳐서 배치 */
-    aspect-ratio: 3 / 4; /* 가로3:세로4 고정 */
+/* 비디오, 미리보기, 프레임이 같은 위치에 겹침 */
+#video, .preview-overlay, .frame-overlay {
+    grid-area: 1 / 1 / 2 / 2;
     width: 100%;
     height: 100%;
-    display: block;
 }
 
-video#video {
-    object-fit: cover; /* 비디오가 3:4 영역을 빈틈없이 채움 */
-    z-index: 1;
-    transform: scaleX(1); /* 좌우반전 없음 */
+#video { object-fit: cover; z-index: 1; }
+.preview-overlay { 
+    object-fit: cover; 
+    z-index: 2; 
+    display: none; /* 초기에는 숨김 */
 }
+.frame-overlay { object-fit: fill; z-index: 3; pointer-events: none; }
 
-.frame-overlay {
-    object-fit: fill; /* 프레임 이미지가 3:4 영역에 딱 맞게 늘어남 */
-    z-index: 2;
-    pointer-events: none; /* 터치 방해 금지 */
-}
-
-/* 버튼 스타일링 */
-.controls {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
+/* 버튼 디자인 */
+.controls { display: flex; flex-direction: column; gap: 15px; }
 
 button {
     width: 100%;
-    height: 64px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border-radius: 12px;
+    height: 60px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px; /* 둥근 버튼으로 디자인 변경 */
     border: none;
     cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
+    transition: 0.2s;
 }
 
-.btn-primary { background: #000; color: #fff; }
+.btn-primary { background: #111; color: #fff; }
 .btn-secondary { background: #ff4757; color: #fff; }
-button:disabled { background: #eee; color: #aaa; cursor: not-allowed; }
+.btn-outline { background: #fff; color: #111; border: 1px solid #111; }
+button:disabled { background: #eee; color: #aaa; }
 
-#photos img {
-    width: 100%;
-    margin-top: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+.flash-effect::after {
+    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: white; z-index: 4; animation: flash-anim 0.3s ease-out;
 }
+@keyframes flash-anim { from { opacity: 1; } to { opacity: 0; } }
