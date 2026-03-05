@@ -2,34 +2,36 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>포토부스</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>정밀 합성 포토부스</title>
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 
-    <div class="container" role="main">
+    <div class="container">
         <header>
-            <h1>📸 My emtekinc Booth 📸</h1>
-            <p>화면을 터치하거나 촬영 버튼을 눌러주세요</p>
+            <h1>📸 Photo Booth</h1>
         </header>
         
-        <div class="photo-zone" id="photo-zone" tabindex="0" role="button" aria-label="사진 촬영하기">
-            <video id="video" autoplay playsinline muted></video>
-            <img src="img.png" id="frame-img" class="frame-overlay" alt="촬영용 프레임 이미지">
+        <div class="photo-wrapper">
+            <div class="photo-zone" id="photo-zone">
+                <video id="video" autoplay playsinline muted></video>
+                <img src="./img.png" id="frame-img" class="frame-overlay" alt="프레임">
+            </div>
         </div>
 
         <div class="controls">
-            <button id="start-btn" class="btn-primary" aria-live="polite">카메라 시작</button>
-            <button id="snap-btn" class="btn-secondary" disabled aria-label="사진 찍기 및 저장">사진 찍기</button>
+            <button id="start-btn" class="btn-primary">카메라 시작</button>
+            <button id="snap-btn" class="btn-secondary" disabled>사진 찍기</button>
         </div>
 
-        <div id="gallery" aria-relevant="additions" aria-live="polite">
+        <div id="gallery">
             <div id="photos"></div>
         </div>
     </div>
 
     <canvas id="canvas" style="display:none;"></canvas>
-    <script src="script.js"></script>
+
+    <script src="./script.js"></script>
 </body>
 </html>

@@ -2,77 +2,83 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #f0f0f0;
+    font-family: sans-serif;
     display: flex;
     justify-content: center;
-    font-family: -apple-system, sans-serif;
 }
 
 .container {
-    width: 100vw;
-    max-width: 400px; /* 휴대폰 가로폭에 적당한 크기 */
+    width: 100%;
+    max-width: 400px;
     padding: 20px;
-    box-sizing: border-box;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* 3:4 비율 고정 박스 */
+/* 3:4 비율 박스가 화면 높이를 넘지 않도록 제한 */
+.photo-wrapper {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+}
+
 .photo-zone {
     position: relative;
     width: 100%;
-    aspect-ratio: 3 / 4; 
+    aspect-ratio: 3 / 4; /* 가로 3 : 세로 4 고정 */
     background: #000;
-    border-radius: 15px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* 비디오와 프레임이 절대 넘치지 않고 박스에 꽉 차게 */
+#video, .frame-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 
 #video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* 비율에 맞게 꽉 채움 */
+    object-fit: cover; /* 3:4 박스를 꽉 채움 */
     z-index: 1;
-    /* transform: scaleX(-1); 좌우반전 필요 시 주석 해제 */
 }
 
 .frame-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    object-fit: fill; /* 프레임 이미지를 3:4 박스 규격에 강제로 맞춤 */
     z-index: 2;
-    pointer-events: none; /* 클릭 방해 금지 */
-    object-fit: fill; /* 프레임을 영역에 딱 맞춤 */
+    pointer-events: none; /* 터치 무시 */
 }
 
+/* 버튼 스타일 */
 .controls {
+    width: 100%;
+    margin-top: 20px;
     display: flex;
+    flex-direction: column;
     gap: 10px;
-    margin: 25px 0;
 }
 
 button {
-    flex: 1;
-    padding: 18px;
-    border-radius: 12px;
+    height: 55px;
+    border-radius: 10px;
     border: none;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.2s;
 }
 
-#start-btn { background: #333; color: white; }
-#snap-btn { background: #ff4757; color: white; }
-#snap-btn:disabled { background: #ccc; cursor: not-allowed; }
+.btn-primary { background: #333; color: white; }
+.btn-secondary { background: #ff4757; color: white; }
+button:disabled { background: #ccc; cursor: not-allowed; }
 
 #photos img {
     width: 100%;
-    margin-top: 15px;
+    margin-top: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }

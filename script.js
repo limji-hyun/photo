@@ -1,87 +1,78 @@
-// script.js
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const frameImg = document.getElementById('frame-img');
 const startBtn = document.getElementById('start-btn');
 const snapBtn = document.getElementById('snap-btn');
 const photosDiv = document.getElementById('photos');
-const photoZone = document.getElementById('photo-zone'); // 터치 영역 추가
 
 // 1. 카메라 시작
 startBtn.addEventListener('click', async () => {
-    const constraints = {
-        video: {
-            facingMode: "user",
-            aspectRatio: 0.75 // 3:4
-        },
-        audio: false
-    };
-
     try {
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { 
+                facingMode: "user",
+                aspectRatio: 0.75 // 3:4
+            },
+            audio: false
+        });
         video.srcObject = stream;
         video.setAttribute("playsinline", true);
         await video.play();
 
-        startBtn.innerText = "연결 완료";
-        startBtn.disabled = true;
+        startBtn.style.display = "none";
         snapBtn.disabled = false;
     } catch (err) {
-        console.error("Camera access denied:", err);
-        alert("카메라 권한이 거부되었거나 HTTPS 환경이 아닙니다.");
+        alert("카메라 연결 실패: https 주소인지 확인해주세요.");
     }
 });
 
-// 2. 촬영 핵심 로직 (재사용을 위해 함수로 분리)
-const takePhoto = () => {
-    // 카메라가 아직 연결되지 않았다면 작동 안 함
-    if (snapBtn.disabled) return;
-
+// 2. 촬영 버튼 클릭 시만 촬영 (터치 기능 삭제)
+snapBtn.addEventListener('click', () => {
     if (!frameImg.complete) {
-        alert("프레임 이미지를 로드 중입니다.");
+        alert("프레임 로딩 중...");
         return;
     }
 
     const ctx = canvas.getContext('2d');
+    
+    // 고화질 3:4 해상도 설정
     canvas.width = 1200;
     canvas.height = 1600;
 
-    // 단계 1: 카메라 그리기
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    // 단계 1: 비디오 화면 합성
+    // 비디오 원본이 3:4가 아닐 수 있으므로 박스 크기에 맞춰 꽉 채워서 그림
+    const videoRatio = video.videoWidth / video.videoHeight;
+    const targetRatio = 3 / 4;
+    
+    let sx, sy, sw, sh;
+    if (videoRatio > targetRatio) {
+        sw = video.videoHeight * targetRatio;
+        sh = video.videoHeight;
+        sx = (video.videoWidth - sw) / 2;
+        sy = 0;
+    } else {
+        sw = video.videoWidth;
+        sh = video.videoWidth / targetRatio;
+        sx = 0;
+        sy = (video.videoHeight - sh) / 2;
+    }
 
-    // 단계 2: 프레임 겹치기
+    // 카메라 화면을 캔버스에 가득 채워 그리기
+    ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+
+    // 단계 2: 프레임 이미지를 그 위에 덮기
     ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
 
-    // 단계 3: 저장 및 미리보기
+    // 단계 3: 이미지 추출 및 저장
     const dataUrl = canvas.toDataURL('image/png');
-    
     const link = document.createElement('a');
     link.href = dataUrl;
     link.download = `photo_${Date.now()}.png`;
     link.click();
 
+    // 결과 미리보기
     const resultImg = document.createElement('img');
     resultImg.src = dataUrl;
-    photosDiv.innerHTML = "<h3>방금 저장된 사진:</h3>"; 
+    photosDiv.innerHTML = "<h3>저장되었습니다!</h3>"; 
     photosDiv.appendChild(resultImg);
-    
-    // 촬영 피드백 (화면 깜빡임 효과 등 추가 가능)
-    console.log("Photo Captured!");
-};
-
-// 3. 촬영 버튼 클릭 이벤트
-snapBtn.addEventListener('click', takePhoto);
-
-// 4. 프레임 영역 터치/클릭 이벤트 추가
-// PC 클릭
-photoZone.addEventListener('click', (e) => {
-    e.preventDefault();
-    takePhoto();
 });
-
-// 모바일 터치 (반응 속도를 위해 touchstart 사용 가능)
-photoZone.addEventListener('touchstart', (e) => {
-    // 중복 실행 방지 (클릭 이벤트와 겹치지 않게)
-    // e.preventDefault(); 
-    takePhoto();
-}, { passive: true });
