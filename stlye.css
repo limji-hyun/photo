@@ -39,6 +39,7 @@ header p {
     position: relative;
     width: 100%;
     max-width: 360px; /* 너무 크지 않게 적절한 제한 */
+    max-min-height: 490px;
     aspect-ratio: 3 / 4; 
     background: #000;
     border-radius: 24px; /* 더 부드러운 모서리 */
@@ -102,3 +103,4 @@ button:disabled { background: #eee; color: #aaa; cursor: not-allowed; }
     margin-top: 20px;
     border-radius: 16px;
 }
+
