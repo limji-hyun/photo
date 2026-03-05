@@ -3,30 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>프레임 카메라</title>
+    <title>픽픽이랑 피닝이랑 사진 찍자</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>📸 Photo Frame</h1>
-        
-        <div class="camera-wrapper">
-            <video id="video" autoplay playsinline muted></video>
-            <div class="frame-overlay"></div>
-        </div>
-
-        <div class="controls">
-            <button id="start-btn">카메라 켜기</button>
-            <button id="snap-btn" disabled>사진 찍기</button>
-        </div>
-
-        <div id="gallery">
-            <h3>갤러리 (클릭 시 저장)</h3>
-            <div id="photos"></div>
-        </div>
+<div class="container">
+    <div class="photo-zone" id="photo-zone">
+        <video id="video" autoplay playsinline muted></video>
+        <img src="img.png" id="frame-img" class="frame-overlay">
     </div>
 
-    <canvas id="canvas" style="display:none;"></canvas>
+    <div class="controls">
+        <button id="start-btn">사진을 찍으려면 터치해주세요!</button>
+        <button id="snap-btn" disabled>사진 촬영 및 저장</button>
+    </div>
+
+    <div id="gallery">
+        <div id="photos"></div>
+    </div>
+</div>
+
+<canvas id="canvas" style="display:none;"></canvas>
     <script src="script.js"></script>
 </body>
 </html>

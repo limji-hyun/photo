@@ -1,58 +1,91 @@
 /* style.css */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: #f8f9fa;
     margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
     display: flex;
     justify-content: center;
+    font-family: sans-serif;
 }
 
-.container { width: 100%; max-width: 500px; text-align: center; padding: 20px; }
+.container {
+    width: 100vw;
+    max-width: 480px; /* 일반적인 핸드폰 가로폭 */
+    padding: 20px;
+    box-sizing: border-box;
+}
 
-/* 카메라와 프레임을 감싸는 영역 */
-.camera-wrapper {
+/* 3:4 비율 유지 박스 */
+.photo-zone {
     position: relative;
     width: 100%;
-    aspect-ratio: 3 / 4; /* 세로형 프레임 */
+    aspect-ratio: 3 / 4;
     background: #000;
-    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    border-radius: 10px;
 }
 
 #video {
+    position: absolute;
+    top: 0; left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* 화면에 꽉 차게 */
-    transform: scaleX(-1); /* 거울 모드 */
+    object-fit: cover; /* 프레임 비율에 맞춰 꽉 채움 */
+    z-index: 1;
 }
 
-/* 프레임 디자인 (원하는 선이나 이미지를 넣으세요) */
+.frame-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2; /* 비디오보다 위에 위치 */
+    pointer-events: none;
+    object-fit: fill; /* 프레임 이미지를 영역에 맞게 늘림 */
+}
+
+/* 카메라 위에 겹쳐질 프레임 디자인 */
 .frame-overlay {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    border: 15px solid white; /* 흰색 액자 틀 */
-    box-sizing: border-box;
     pointer-events: none; /* 클릭 방해 금지 */
+    border: 20px solid #ffffff; /* 흰색 테두리 프레임 */
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 30px;
 }
 
-.controls button {
-    margin: 20px 5px;
-    padding: 15px 30px;
-    border-radius: 30px;
-    border: none;
+.frame-text {
+    color: #333;
     font-weight: bold;
-    font-size: 1rem;
+    letter-spacing: 5px;
+    font-size: 1.2rem;
 }
 
-#start-btn { background: #007aff; color: white; }
-#snap-btn { background: #ff3b30; color: white; }
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+button {
+    flex: 1;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#start-btn { background: #333; color: white; }
+#snap-btn { background: #ff4757; color: white; }
 #snap-btn:disabled { background: #ccc; }
 
 #photos img {
-    width: 45%;
-    margin: 5px;
-    border-radius: 10px;
-    border: 5px solid white;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 5px;
 }
