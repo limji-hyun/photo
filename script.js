@@ -9,10 +9,7 @@ const photosDiv = document.getElementById('photos');
 startBtn.addEventListener('click', async () => {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
-            video: { 
-                facingMode: "user",
-                aspectRatio: 0.75 // 3:4
-            },
+            video: { facingMode: "user", aspectRatio: 0.75 },
             audio: false
         });
         video.srcObject = stream;
@@ -22,25 +19,21 @@ startBtn.addEventListener('click', async () => {
         startBtn.style.display = "none";
         snapBtn.disabled = false;
     } catch (err) {
-        alert("카메라 연결 실패: https 주소인지 확인해주세요.");
+        alert("카메라 연결 실패: HTTPS 환경인지 확인해주세요.");
     }
 });
 
-// 2. 촬영 버튼 클릭 시만 촬영 (터치 기능 삭제)
+// 2. 촬영 버튼 클릭 (터치 촬영 제외)
 snapBtn.addEventListener('click', () => {
-    if (!frameImg.complete) {
-        alert("프레임 로딩 중...");
-        return;
-    }
+    if (!frameImg.complete) return;
 
     const ctx = canvas.getContext('2d');
     
-    // 고화질 3:4 해상도 설정
+    // 고화질 3:4 결과물 크기 설정 (1200x1600)
     canvas.width = 1200;
     canvas.height = 1600;
 
-    // 단계 1: 비디오 화면 합성
-    // 비디오 원본이 3:4가 아닐 수 있으므로 박스 크기에 맞춰 꽉 채워서 그림
+    // 카메라 화면 비율 보정 (Crop)
     const videoRatio = video.videoWidth / video.videoHeight;
     const targetRatio = 3 / 4;
     
@@ -57,22 +50,22 @@ snapBtn.addEventListener('click', () => {
         sy = (video.videoHeight - sh) / 2;
     }
 
-    // 카메라 화면을 캔버스에 가득 채워 그리기
+    // (1) 비디오 그리기
     ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
 
-    // 단계 2: 프레임 이미지를 그 위에 덮기
+    // (2) 프레임 덮기
     ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
 
-    // 단계 3: 이미지 추출 및 저장
+    // (3) 결과 추출 및 저장
     const dataUrl = canvas.toDataURL('image/png');
     const link = document.createElement('a');
     link.href = dataUrl;
     link.download = `photo_${Date.now()}.png`;
     link.click();
 
-    // 결과 미리보기
+    // 미리보기
     const resultImg = document.createElement('img');
     resultImg.src = dataUrl;
-    photosDiv.innerHTML = "<h3>저장되었습니다!</h3>"; 
+    photosDiv.innerHTML = "<h2>저장 완료!</h2>"; 
     photosDiv.appendChild(resultImg);
 });
