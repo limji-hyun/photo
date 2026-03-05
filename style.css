@@ -1,28 +1,49 @@
-html { box-sizing: border-box; -webkit-text-size-adjust: 100%; }
-*, *:before, *:after { box-sizing: inherit; }
-
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #fdfdfd; /* 밝은 회색 배경으로 여백 강조 */
-    font-family: -apple-system, sans-serif;
-    display: flex;
-    justify-content: center;
+/* 1. 기본 박스 모델 및 모바일 초기화 설정 */
+html {
+    box-sizing: border-box;
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%; /* 모바일 폰트 크기 자동 조절 방지 */
 }
 
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+/* 2. 브라우저 기본 마진/패딩 제거 및 가독성 설정 */
+body, h1, p {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    color: #333;
+    background-color: #fdfdfd; /* 밝고 깨끗한 배경색 */
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* 3. 모바일 중심 컨테이너 (여백 강조) */
 .container {
     width: 100%;
     max-width: 480px;
-    padding: 40px 30px; /* 상하좌우 넉넉한 여백 부여 */
+    padding: 40px 25px; /* 상하좌우 넉넉한 여백 */
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 header h1 {
-    font-size: 1.5rem;
-    margin-bottom: 30px;
-    letter-spacing: 1px;
+    font-size: 1.6rem;
+    margin-bottom: 25px;
+    letter-spacing: -0.5px;
 }
 
+/* 4. 촬영 영역: 3:4 고정 비율 및 레이어 겹치기 */
 .photo-wrapper {
     width: 100%;
     margin-bottom: 30px;
@@ -31,59 +52,107 @@ header h1 {
 .photo-zone {
     position: relative;
     width: 100%;
-    aspect-ratio: 3 / 4;
-    background: #eee;
-    border-radius: 8px; /* 부드러운 여백 느낌 */
+    aspect-ratio: 3 / 4; /* 가로 3 : 세로 4 비율 유지 */
+    background: #000;
+    border-radius: 12px;
     overflow: hidden;
-    display: grid;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    display: grid; /* 내부 요소를 겹치게 배치 */
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
 }
 
-/* 비디오, 미리보기, 프레임이 같은 위치에 겹침 */
+/* 비디오, 미리보기, 프레임이 모두 같은 공간을 차지함 */
 #video, .preview-overlay, .frame-overlay {
     grid-area: 1 / 1 / 2 / 2;
     width: 100%;
     height: 100%;
+    display: block;
 }
 
+/* 실시간 카메라: 거울 모드 적용 */
 #video {
     object-fit: cover;
     z-index: 1;
-    /* 실시간 화면을 좌우 반전(거울 모드)시킵니다 */
     transform: scaleX(-1);
     -webkit-transform: scaleX(-1);
 }
 
-/* 미리보기 이미지도 셀카처럼 보이게 하려면 반전을 줍니다 */
-.preview-overlay { 
-    object-fit: cover; 
-    z-index: 2; 
+/* 촬영 후 미리보기: 거울 모드 유지 및 기본 숨김 */
+.preview-overlay {
+    object-fit: cover;
+    z-index: 2;
     display: none; 
     transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    background-color: #000;
 }
-.frame-overlay { object-fit: fill; z-index: 3; pointer-events: none; }
 
-/* 버튼 디자인 */
-.controls { display: flex; flex-direction: column; gap: 15px; }
+/* 프레임 이미지: 항상 가장 위(z-index: 3)에 고정 */
+.frame-overlay {
+    object-fit: fill; /* 프레임을 3:4 영역에 꽉 채움 */
+    z-index: 3;
+    pointer-events: none; /* 프레임 뒤의 요소를 클릭/터치할 수 있게 함 */
+}
+
+/* 5. 버튼 및 컨트롤 영역 */
+.controls {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
 
 button {
     width: 100%;
-    height: 60px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    border-radius: 50px; /* 둥근 버튼으로 디자인 변경 */
+    height: 62px; /* 터치하기 쉬운 큰 크기 */
+    border-radius: 50px; /* 둥근 버튼 디자인 */
+    font-size: 1.15rem;
+    font-weight: 700;
     border: none;
     cursor: pointer;
-    transition: 0.2s;
+    transition: background-color 0.2s, transform 0.1s;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.btn-primary { background: #111; color: #fff; }
-.btn-secondary { background: #ff4757; color: #fff; }
-.btn-outline { background: #fff; color: #111; border: 1px solid #111; }
-button:disabled { background: #eee; color: #aaa; }
+button:active {
+    transform: scale(0.98);
+}
 
+.btn-primary {
+    background: #111;
+    color: #fff;
+}
+
+.btn-secondary {
+    background: #ff4757; /* 촬영용 포인트 색상 */
+    color: #fff;
+}
+
+.btn-outline {
+    background: #fff;
+    color: #111;
+    border: 1.5px solid #111;
+}
+
+/* 6. 촬영 플래시 애니메이션 */
 .flash-effect::after {
-    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: white; z-index: 4; animation: flash-anim 0.3s ease-out;
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: white;
+    z-index: 10; /* 모든 레이어보다 위에 노출 */
+    animation: flash-anim 0.3s ease-out forwards;
 }
-@keyframes flash-anim { from { opacity: 1; } to { opacity: 0; } }
+
+@keyframes flash-anim {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* 7. 미리보기 컨트롤 영역 (초기 숨김) */
+#preview-controls {
+    display: none; /* JS에서 flex로 변경함 */
+    width: 100%;
+    flex-direction: column;
+    gap: 12px;
+}

@@ -6,9 +6,13 @@ const photoZone = document.getElementById('photo-zone');
 
 const startBtn = document.getElementById('start-btn');
 const snapBtn = document.getElementById('snap-btn');
+const saveBtn = document.getElementById('save-btn');
 const retakeBtn = document.getElementById('retake-btn');
+const previewControls = document.getElementById('preview-controls');
 
-// 1. 카메라 시작
+let finalImageData = null;
+
+// 카메라 시작
 startBtn.addEventListener('click', async () => {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -16,30 +20,33 @@ startBtn.addEventListener('click', async () => {
             audio: false
         });
         video.srcObject = stream;
-        video.setAttribute("playsinline", true);
-        await video.play();
-
-        startBtn.style.display = "none";
-        snapBtn.disabled = false;
+        video.onloadedmetadata = () => {
+            video.play();
+            startBtn.style.display = "none";
+            snapBtn.style.display = "block";
+        };
     } catch (err) {
-        alert("카메라를 켤 수 없습니다. HTTPS 환경을 확인하세요.");
+        alert("카메라 연결 실패: HTTPS 환경인지 확인해주세요.");
     }
 });
 
-// 2. 촬영 및 미리보기 적용
+// 촬영 함수
 snapBtn.addEventListener('click', () => {
-    if (!frameImg.complete) return;
+    // 1. 프레임 로드 체크
+    if (!frameImg.complete || frameImg.naturalWidth === 0) {
+        alert("프레임 이미지를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
+        return;
+    }
 
-    // 플래시 효과
-    photoZone.classList.remove('flash-effect');
-    void photoZone.offsetWidth;
+    // 2. 플래시 효과
     photoZone.classList.add('flash-effect');
+    setTimeout(() => photoZone.classList.remove('flash-effect'), 300);
 
+    // 3. 캔버스 그리기
     const ctx = canvas.getContext('2d');
     canvas.width = 1200;
     canvas.height = 1600;
 
-    // 비디오 중앙 자르기(Crop) 계산
     const vW = video.videoWidth;
     const vH = video.videoHeight;
     const tR = 3 / 4;
@@ -47,32 +54,53 @@ snapBtn.addEventListener('click', () => {
     if (vW / vH > tR) { sw = vH * tR; sh = vH; sx = (vW - sw) / 2; sy = 0; }
     else { sw = vW; sh = vW / tR; sx = 0; sy = (vH - sh) / 2; }
 
-    // 합성과정
+    // 거울 모드 합성
+    ctx.save();
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
     ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+    ctx.restore();
+    
+    // 프레임 합성 (정방향)
     ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
 
-    const dataUrl = canvas.toDataURL('image/png');
+    // 4. 미리보기 적용 (이 부분이 중요합니다)
+    try {
+        const dataUrl = canvas.toDataURL('image/png');
+        finalImageData = dataUrl;
+        
+        // 미리보기 이미지 로드 대기
+        previewImg.onload = () => {
+            video.style.display = "none";
+            previewImg.style.display = "block";
+            snapBtn.style.display = "none";
+            previewControls.style.display = "flex"; // 여기서 버튼이 나타남
+        };
+        previewImg.src = dataUrl;
 
-    // 다운로드 실행
-    const link = document.createElement('a');
-    link.href = dataUrl;
-    link.download = `booth_${Date.now()}.png`;
-    link.click();
-
-    // 미리보기 모드 전환
-    previewImg.src = dataUrl;
-    previewImg.style.display = "block"; // 사진 보여주기
-    video.style.display = "none";      // 카메라 숨기기
-    
-    snapBtn.style.display = "none";    // 촬영 버튼 숨기기
-    retakeBtn.style.display = "block"; // 다시 찍기 버튼 보이기
+    } catch (e) {
+        console.error("이미지 생성 오류:", e);
+        alert("사진을 생성하는 중 오류가 발생했습니다.");
+    }
 });
 
-// 3. 다시 찍기 (카메라로 복귀)
+// 다시 찍기
 retakeBtn.addEventListener('click', () => {
-    previewImg.style.display = "none"; // 미리보기 숨기기
-    video.style.display = "block";     // 카메라 보이기
+    finalImageData = null;
+    previewImg.style.display = "none";
+    video.style.display = "block";
+    previewControls.style.display = "none";
+    snapBtn.style.display = "block";
+});
+
+// 저장하기
+saveBtn.addEventListener('click', () => {
+    if (!finalImageData) return;
     
-    snapBtn.style.display = "block";   // 촬영 버튼 보이기
-    retakeBtn.style.display = "none";  // 다시 찍기 버튼 숨기기
+    const link = document.createElement('a');
+    link.href = finalImageData;
+    link.download = `my_booth_${Date.now()}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 });
