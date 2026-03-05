@@ -13,7 +13,7 @@
             <h1>📸 emtekinc Booth 📸</h1>
         </header>
         
-        <div class="photo-wrapper">
+    <div class="photo-wrapper">
             <div class="photo-zone" id="photo-zone">
                 <video id="video" autoplay playsinline muted></video>
                 <img id="preview-img" class="preview-overlay" alt="미리보기">
@@ -26,7 +26,7 @@
             
             <button id="snap-btn" class="btn-secondary" style="display:none;">사진 찍기</button>
             
-            <div id="preview-controls" style="display:none; width:100%; gap:10px; display:flex; flex-direction:column;">
+            <div id="preview-controls" style="display:none; width:100%; gap:10px; flex-direction:column;">
                 <button id="save-btn" class="btn-primary">이대로 저장하기</button>
                 <button id="retake-btn" class="btn-outline">다시 찍기</button>
             </div>
@@ -34,6 +34,7 @@
     </div>
 
     <canvas id="canvas" style="display:none;"></canvas>
+
     <script src="./script.js"></script>
 </body>
 </html>
