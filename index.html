@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>3:4 Frame Camera</title>
+    <title>3:4 프레임 카메라</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,14 +11,14 @@
     <div class="container">
         <h1>📸 Photo Booth</h1>
         
-        <div class="photo-zone">
+        <div class="photo-zone" id="photo-zone">
             <video id="video" autoplay playsinline muted></video>
             <img src="img.png" id="frame-img" class="frame-overlay" alt="프레임">
         </div>
 
         <div class="controls">
-            <button id="start-btn">화면 터치시에 촬영이 시작됩니다!</button>
-            <button id="snap-btn" disabled>사진 촬영 및 저장</button>
+            <button id="start-btn">카메라 켜기</button>
+            <button id="snap-btn" disabled>촬영 하기</button>
         </div>
 
         <div id="gallery">
