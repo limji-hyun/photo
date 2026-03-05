@@ -1,0 +1,99 @@
+/* 기본 모바일 최적화 설정 */
+html {
+    box-sizing: border-box;
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, sans-serif;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 100%;
+    max-width: 480px;
+    padding: 20px 15px;
+    text-align: center;
+}
+
+/* 3:4 비율을 고정하고 내부 요소를 겹치는 핵심 박스 */
+.photo-wrapper {
+    width: 100%;
+    max-width: 360px; /* 모바일 적정 너비 */
+    margin: 0 auto 20px auto;
+}
+
+.photo-zone {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4; /* 가로3:세로4 고정 */
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    display: grid; /* 내부 요소 겹치기를 위한 그리드 */
+}
+
+.photo-zone img{
+    width: 100vw;
+    aspect-ratio: 3 / 4; /* 가로3:세로4 고정 */
+}
+
+/* 비디오와 프레임 이미지가 그리드의 같은 칸(0,0)을 차지하게 함 */
+video#video, .frame-overlay {
+    position: absolute;
+    grid-area: 1 / 1 / 2 / 2; /* 1행 1열에 겹쳐서 배치 */
+    aspect-ratio: 3 / 4; /* 가로3:세로4 고정 */
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+video#video {
+    object-fit: cover; /* 비디오가 3:4 영역을 빈틈없이 채움 */
+    z-index: 1;
+    transform: scaleX(1); /* 좌우반전 없음 */
+}
+
+.frame-overlay {
+    object-fit: fill; /* 프레임 이미지가 3:4 영역에 딱 맞게 늘어남 */
+    z-index: 2;
+    pointer-events: none; /* 터치 방해 금지 */
+}
+
+/* 버튼 스타일링 */
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+button {
+    width: 100%;
+    height: 64px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn-primary { background: #000; color: #fff; }
+.btn-secondary { background: #ff4757; color: #fff; }
+button:disabled { background: #eee; color: #aaa; cursor: not-allowed; }
+
+#photos img {
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
