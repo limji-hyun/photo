@@ -2,14 +2,17 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>3:4 프레임 카메라</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>모바일 포토부스</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="container">
-        <h1>📸 Photo Booth</h1>
+        <header>
+            <h1>📸emtekinc Booth📸</h1>
+            <p>화면을 터치해서 촬영하세요</p>
+        </header>
         
         <div class="photo-zone" id="photo-zone">
             <video id="video" autoplay playsinline muted></video>
@@ -17,8 +20,8 @@
         </div>
 
         <div class="controls">
-            <button id="start-btn">카메라 켜기</button>
-            <button id="snap-btn" disabled>촬영 하기</button>
+            <button id="start-btn" class="btn-primary">카메라 시작</button>
+            <button id="snap-btn" class="btn-secondary" disabled>사진 찍기</button>
         </div>
 
         <div id="gallery">
@@ -27,7 +30,6 @@
     </div>
 
     <canvas id="canvas" style="display:none;"></canvas>
-
     <script src="script.js"></script>
 </body>
 </html>
