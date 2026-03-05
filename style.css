@@ -46,11 +46,20 @@ header h1 {
     height: 100%;
 }
 
-#video { object-fit: cover; z-index: 1; }
+#video {
+    object-fit: cover;
+    z-index: 1;
+    /* 실시간 화면을 좌우 반전(거울 모드)시킵니다 */
+    transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+}
+
+/* 미리보기 이미지도 셀카처럼 보이게 하려면 반전을 줍니다 */
 .preview-overlay { 
     object-fit: cover; 
     z-index: 2; 
-    display: none; /* 초기에는 숨김 */
+    display: none; 
+    transform: scaleX(-1);
 }
 .frame-overlay { object-fit: fill; z-index: 3; pointer-events: none; }
 
