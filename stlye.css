@@ -43,7 +43,7 @@ body {
 }
 
 .photo-zone img{
-    width: 100%;
+    width: 100vw;
     aspect-ratio: 3 / 4; /* 가로3:세로4 고정 */
 }
 
@@ -92,8 +92,9 @@ button {
 button:disabled { background: #eee; color: #aaa; cursor: not-allowed; }
 
 #photos img {
-    width: 100%;
+    width: 100vw;
     margin-top: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
 }
