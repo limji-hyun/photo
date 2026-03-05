@@ -2,51 +2,67 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #f8f9fa;
     display: flex;
     justify-content: center;
     font-family: -apple-system, sans-serif;
+    touch-action: pan-y; /* 스크롤은 허용, 핀치줌 방지 */
 }
 
 .container {
-    width: 100vw;
-    max-width: 400px; /* 휴대폰 가로폭에 적당한 크기 */
+    width: 100%;
+    max-width: 400px;
     padding: 20px;
     box-sizing: border-box;
     text-align: center;
 }
 
-/* 3:4 비율 고정 박스 */
+/* 3:4 비율 부모 박스 */
 .photo-zone {
     position: relative;
     width: 100%;
     aspect-ratio: 3 / 4; 
     background: #000;
-    border-radius: 15px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+/* 비디오와 프레임을 하나로 겹침 */
+#video, .frame-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 #video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* 비율에 맞게 꽉 채움 */
+    object-fit: cover; /* 3:4 영역에 꽉 차게 채움 */
     z-index: 1;
-    /* transform: scaleX(-1); 좌우반전 필요 시 주석 해제 */
+    /* 좌우 반전 없음 (기본값) */
 }
 
 .frame-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
     z-index: 2;
-    pointer-events: none; /* 클릭 방해 금지 */
-    object-fit: fill; /* 프레임을 영역에 딱 맞춤 */
+    object-fit: fill; /* 프레임을 박스 크기에 강제 맞춤 */
+    pointer-events: none; /* 터치 이벤트가 부모(photo-zone)로 전달되게 함 */
+}
+
+/* 촬영 시 플래시 애니메이션 효과 */
+.flash-effect::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: white;
+    z-index: 3;
+    animation: flash-anim 0.2s ease-out;
+}
+
+@keyframes flash-anim {
+    from { opacity: 1; }
+    to { opacity: 0; }
 }
 
 .controls {
@@ -57,22 +73,22 @@ body {
 
 button {
     flex: 1;
-    padding: 18px;
+    padding: 16px;
     border-radius: 12px;
     border: none;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.2s;
+    background: #333;
+    color: white;
 }
 
-#start-btn { background: #333; color: white; }
-#snap-btn { background: #ff4757; color: white; }
+#snap-btn { background: #ff4757; }
 #snap-btn:disabled { background: #ccc; cursor: not-allowed; }
 
 #photos img {
     width: 100%;
     margin-top: 15px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border: 1px solid #ddd;
 }
