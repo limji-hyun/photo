@@ -3,33 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>3:4 포토부스</title>
+    <title>📸 emtekinc Booth 📸</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 
     <div class="container">
         <header>
-            <h1>📸 My Booth</h1>
+            <h1>📸 emtekinc Booth 📸</h1>
         </header>
         
         <div class="photo-wrapper">
             <div class="photo-zone" id="photo-zone">
                 <video id="video" autoplay playsinline muted></video>
-                <img id="preview-img" class="preview-overlay" alt="촬영된 사진 미리보기">
+                <img id="preview-img" class="preview-overlay" alt="미리보기">
                 <img src="./img.png" id="frame-img" class="frame-overlay" alt="프레임">
             </div>
         </div>
 
         <div class="controls">
-            <button id="start-btn" class="btn-primary">카메라 시작</button>
-            <button id="snap-btn" class="btn-secondary" disabled>사진 찍기</button>
-            <button id="retake-btn" class="btn-outline" style="display:none;">다시 찍기</button>
+            <button id="start-btn" class="btn-primary">카메라 켜기</button>
+            
+            <button id="snap-btn" class="btn-secondary" style="display:none;">사진 찍기</button>
+            
+            <div id="preview-controls" style="display:none; width:100%; gap:10px; display:flex; flex-direction:column;">
+                <button id="save-btn" class="btn-primary">이대로 저장하기</button>
+                <button id="retake-btn" class="btn-outline">다시 찍기</button>
+            </div>
         </div>
     </div>
 
     <canvas id="canvas" style="display:none;"></canvas>
-
     <script src="./script.js"></script>
 </body>
 </html>
