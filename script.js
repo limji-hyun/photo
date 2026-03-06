@@ -69,7 +69,7 @@ snapBtn.addEventListener('click', () => {
     ctx.restore();                  // 좌표계 원복 (프레임을 위해)
 
     // 3. 그 위에 정방향으로 프레임 이미지 덮기
-    ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(frameImg, -1, 1, canvas.width, canvas.height);
 
     // 최종 데이터 추출
     finalImageData = canvas.toDataURL('image/png');
@@ -105,5 +105,6 @@ saveBtn.addEventListener('click', () => {
     link.download = `emtekinc_booth_${Date.now()}.png`;
     link.click();
 });
+
 
 
