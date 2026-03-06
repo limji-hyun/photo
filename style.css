@@ -53,7 +53,7 @@ body {
 
 /* 실시간 프레임 가이드: 촬영 중에만 보이고, 미리보기 시 z-index에서 밀리게 설정 */
 .frame-overlay { 
-    object-fit: fill; z-index: 3; pointer-events: none; 
+    object-fit: fill; z-index: 3; pointer-events: none; transform: scaleX(-1);
 }
 
 /* 버튼 디자인 */
@@ -78,5 +78,6 @@ button:active { transform: scale(0.97); }
 
 
 #preview-controls { flex-direction: column; gap: 12px; }
+
 
 
