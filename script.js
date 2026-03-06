@@ -19,7 +19,12 @@ let finalImageData = null;
 enterBtn.addEventListener('click', async () => {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: "user", aspectRatio: 0.75 },
+            video: { 
+                facingMode: "user",
+                // 고정된 비율 대신 해상도를 요청하여 화각을 더 넓게 확보합니다.
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            },
             audio: false
         });
         
@@ -100,4 +105,5 @@ saveBtn.addEventListener('click', () => {
     link.download = `emtekinc_booth_${Date.now()}.png`;
     link.click();
 });
+
 
