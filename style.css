@@ -29,26 +29,32 @@ body {
 
 /* 촬영 박스 (3:4 비율 고정) */
 .photo-wrapper { width: 100%; margin-bottom: 30px; }
+
 .photo-zone {
     position: relative; width: 100%; aspect-ratio: 3 / 4;
     background: #000; border-radius: 12px; overflow: hidden;
-    display: grid; box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    display: grid; 
 }
 
-/* 모든 레이어를 동일 공간에 겹침 */
 #video, .preview-overlay, .frame-overlay {
     grid-area: 1 / 1 / 2 / 2;
     width: 100%; height: 100%;
 }
 
-/* 거울 모드 설정 */
-#video { object-fit: cover; z-index: 1; transform: scaleX(-1); -webkit-transform: scaleX(-1); }
+/* 실시간 카메라: 거울 모드 */
+#video { object-fit: cover; z-index: 1; transform: scaleX(-1); }
+
+/* 촬영 후 결과물: 이미 거울모드로 합성된 이미지를 보여줄 것이므로 transform을 제거합니다 (중요) */
 .preview-overlay { 
-    object-fit: cover; z-index: 2; 
-    display: none; transform: scaleX(-1); 
+    object-fit: cover; z-index: 4; /* 프레임보다 위에 배치 */
+    display: none; 
     background-color: #000;
 }
-.frame-overlay { object-fit: fill; z-index: 3; pointer-events: none; }
+
+/* 실시간 프레임 가이드: 촬영 중에만 보이고, 미리보기 시 z-index에서 밀리게 설정 */
+.frame-overlay { 
+    object-fit: fill; z-index: 3; pointer-events: none; 
+}
 
 /* 버튼 디자인 */
 .controls { width: 100%; display: flex; flex-direction: column; gap: 12px; }
@@ -69,5 +75,6 @@ button:active { transform: scale(0.97); }
     background: white; z-index: 10; animation: flash-anim 0.3s ease-out forwards;
 }
 @keyframes flash-anim { 0% { opacity: 1; } 100% { opacity: 0; } }
+
 
 #preview-controls { flex-direction: column; gap: 12px; }
