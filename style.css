@@ -49,7 +49,6 @@ body {
     object-fit: cover; z-index: 4; /* 프레임보다 위에 배치 */
     display: none; 
     background-color: #000;
-    transform: scaleX(-1);
 }
 
 /* 실시간 프레임 가이드: 촬영 중에만 보이고, 미리보기 시 z-index에서 밀리게 설정 */
@@ -79,4 +78,5 @@ button:active { transform: scale(0.97); }
 
 
 #preview-controls { flex-direction: column; gap: 12px; }
+
 
