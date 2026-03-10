@@ -1,87 +1,48 @@
-/* 기본 리셋 및 모바일 최적화 */
 html { box-sizing: border-box; -webkit-text-size-adjust: 100%; }
 *, *:before, *:after { box-sizing: inherit; }
 
 body {
-    margin: 0; padding: 0;
-    background-color: #fdfdfd;
+    margin: 0; padding: 0; background-color: #fdfdfd;
     font-family: -apple-system, sans-serif;
-    display: flex; justify-content: center;
-    min-height: 100vh;
+    display: flex; justify-content: center; min-height: 100vh;
 }
 
-.container {
-    width: 100%; max-width: 480px;
-    padding: 40px 25px; text-align: center;
-}
+.container { width: 100%; max-width: 480px; padding: 40px 25px; text-align: center; }
 
-/* 홈 화면 디자인 */
-#home-screen {
-    display: flex; flex-direction: column;
-    justify-content: center; height: 80vh;
-}
+#home-screen { display: flex; flex-direction: column; justify-content: center; height: 80vh; }
 .logo { font-size: 4.5rem; margin-bottom: 20px; }
 #home-screen h1 { font-size: 2.2rem; margin-bottom: 12px; font-weight: 800; }
 #home-screen p { color: #777; margin-bottom: 50px; font-size: 1.1rem; line-height: 1.6; }
 
-/* 부스 화면 상단 타이틀 */
-.booth-title { font-size: 1.2rem; margin-bottom: 20px; font-weight: 700; color: #111; }
+.booth-title { font-size: 1.2rem; margin-bottom: 20px; font-weight: 700; }
 
-/* 촬영 박스 (3:4 비율 고정) */
 .photo-wrapper { width: 100%; margin-bottom: 30px; }
-
 .photo-zone {
     position: relative; width: 100%; aspect-ratio: 3 / 4;
     background: #000; border-radius: 12px; overflow: hidden;
-    display: grid; 
+    display: grid; box-shadow: 0 15px 40px rgba(0,0,0,0.12);
 }
 
-#video, .preview-overlay, .frame-overlay {
-    grid-area: 1 / 1 / 2 / 2;
-    width: 100%; height: 100%;
-}
+#video, .preview-overlay, .frame-overlay { grid-area: 1 / 1 / 2 / 2; width: 100%; height: 100%; }
 
 /* 실시간 카메라: 거울 모드 */
-#video { object-fit: cover; z-index: 1; transform: scaleX(-1); }
+#video { object-fit: cover; z-index: 1; transform: scaleX(-1); -webkit-transform: scaleX(-1); }
 
-/* 촬영 후 결과물: 이미 거울모드로 합성된 이미지를 보여줄 것이므로 transform을 제거합니다 (중요) */
-.preview-overlay { 
-    object-fit: cover; z-index: 4; /* 프레임보다 위에 배치 */
-    display: none; 
-    background-color: #000;
-    transform: scaleX(-1);
-}
+/* 미리보기: 이미 캔버스에서 뒤집혔으므로 여기서는 반전하지 않음 */
+.preview-overlay { object-fit: contain; z-index: 4; display: none; background-color: #000; }
 
-/* 실시간 프레임 가이드: 촬영 중에만 보이고, 미리보기 시 z-index에서 밀리게 설정 */
-.frame-overlay { 
-    object-fit: fill; z-index: 3; pointer-events: none;
-}
+/* 프레임: contain을 사용하여 프레임 전체가 다 보이도록 설정 */
+.frame-overlay { object-fit: contain; z-index: 3; pointer-events: none; }
 
-/* 버튼 디자인 */
-.controls { width: 100%; display: flex; flex-direction: column; gap: 12px; }
-button {
-    width: 100%; height: 62px; border-radius: 50px;
-    font-size: 1.15rem; font-weight: 700; border: none; cursor: pointer;
-    transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-button:active { transform: scale(0.97); }
-
+button { width: 100%; height: 62px; border-radius: 50px; font-size: 1.15rem; font-weight: 700; border: none; cursor: pointer; }
 .btn-primary { background: #111; color: #fff; }
 .btn-secondary { background: #ff4757; color: #fff; }
 .btn-outline { background: #fff; color: #111; border: 1.5px solid #111; }
 
-/* 플래시 애니메이션 */
 .flash-effect::after {
     content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: white; z-index: 10; animation: flash-anim 0.3s ease-out forwards;
 }
 @keyframes flash-anim { 0% { opacity: 1; } 100% { opacity: 0; } }
 
-
 #preview-controls { flex-direction: column; gap: 12px; }
-
-
-
-
-
-
