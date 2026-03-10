@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-
     <div class="container">
         <div id="home-screen" class="screen">
             <header>
@@ -21,10 +20,7 @@
         </div>
 
         <div id="booth-screen" class="screen" style="display:none;">
-            <header>
-                <h2 class="booth-title">📸 emtekinc Booth 📸</h2>
-            </header>
-
+            <header><h2 class="booth-title">📸 emtekinc Booth 📸</h2></header>
             <div class="photo-wrapper">
                 <div class="photo-zone" id="photo-zone">
                     <video id="video" autoplay playsinline muted></video>
@@ -32,10 +28,8 @@
                     <img src="./img.png" id="frame-img" class="frame-overlay" alt="프레임">
                 </div>
             </div>
-
             <div class="controls">
                 <button id="snap-btn" class="btn-secondary">사진 찍기</button>
-                
                 <div id="preview-controls" style="display:none; width:100%; gap:12px; flex-direction:column;">
                     <button id="save-btn" class="btn-primary">이대로 저장하기</button>
                     <button id="retake-btn" class="btn-outline">다시 찍기</button>
@@ -43,9 +37,7 @@
             </div>
         </div>
     </div>
-
     <canvas id="canvas" style="display:none;"></canvas>
-
     <script src="./script.js"></script>
 </body>
 </html>
