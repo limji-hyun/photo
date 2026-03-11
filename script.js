@@ -78,10 +78,11 @@ snapBtn.addEventListener('click', () => {
     ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
 
     // 날짜 텍스트 합성 (검은색 글씨)
-    const currentDateTime = getFormattedDateTime();
-    ctx.font = "500 42px Mona, sans-serif"; // 1200x1600 해상도 비례 크기
-    ctx.fillStyle = "#000000"; // 검은색
+const currentDateTime = getFormattedDateTime();
+    ctx.font = "500 42px Mona, sans-serif"; // 캔버스용 폰트 설정
+    ctx.fillStyle = "#000000"; // 검정색
     ctx.textAlign = "center";
+    ctx.textBaseline = "top";
     ctx.shadowBlur = 0; // 그림자 제거
     // 상단 17px 비율에 맞춘 캔버스 y좌표 (약 65~70px)
     ctx.fillText(currentDateTime, canvas.width / 2, 70);
@@ -116,3 +117,4 @@ saveBtn.addEventListener('click', () => {
     link.download = `emtekinc_booth_${Date.now()}.png`;
     link.click();
 });
+
