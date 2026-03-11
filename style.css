@@ -1,4 +1,4 @@
-/* 리셋 및 모바일 최적화 */
+/* 리셋 및 초기화 */
 html { box-sizing: border-box; -webkit-text-size-adjust: 100%; }
 *, *:before, *:after { box-sizing: inherit; }
 
@@ -15,16 +15,15 @@ body {
     padding: 40px 25px; text-align: center;
 }
 
-/* 홈 화면 */
+/* 화면 전환 */
 #home-screen { display: flex; flex-direction: column; justify-content: center; height: 80vh; }
 .logo { font-size: 4.5rem; margin-bottom: 20px; }
 #home-screen h1 { font-size: 2.2rem; margin-bottom: 12px; font-weight: 800; }
 #home-screen p { color: #777; margin-bottom: 50px; font-size: 1.1rem; line-height: 1.6; }
 
-/* 부스 화면 타이틀 */
 .booth-title { font-size: 1.2rem; margin-bottom: 20px; font-weight: 700; color: #111; }
 
-/* 촬영 영역 (3:4 비율) */
+/* 촬영 박스 레이어 핵심 (3:4 비율) */
 .photo-wrapper { width: 100%; margin-bottom: 30px; }
 .photo-zone {
     position: relative; width: 100%; aspect-ratio: 3 / 4;
@@ -32,32 +31,32 @@ body {
     display: grid; box-shadow: 0 15px 40px rgba(0,0,0,0.12);
 }
 
-#video, .preview-overlay, .frame-overlay {
+#video, .preview-overlay, .frame-overlay, .date-overlay {
     grid-area: 1 / 1 / 2 / 2;
     width: 100%; height: 100%;
 }
 
-/* 거울 모드 설정 */
+/* 1층: 비디오 (거울 모드) */
 #video { object-fit: cover; z-index: 1; transform: scaleX(-1); }
 
-/* 날짜 레이어 (프레임 위, 미리보기 아래) */
-.date-overlay {
-    position: absolute; top: 30px; left: -50px; width: 100%;
-    z-index: 5; color: #000000; font-size: 1rem; font-weight: 400;
-    /* text-shadow: 0 2px 4px rgba(0,0,0,0.5);  */
-    text-align: center; letter-spacing: 1px; pointer-events: none;
-}
-
-/* 프레임 설정 */
-.frame-overlay { object-fit: contain; z-index: 3; pointer-events: none; }
-
-/* 미리보기 설정 (최상단) */
+/* 2층: 미리보기 (촬영 데이터 출력용, CSS 반전 없음) */
 .preview-overlay { 
-    object-fit: contain; z-index: 10; display: none; 
+    object-fit: cover; z-index: 2; display: none; 
     background-color: #000;
 }
 
-/* 버튼 스타일 */
+/* 3층: 날짜 (항상 동일 위치) */
+.date-overlay {
+    position: absolute; top: 25px; left: 0; width: 100%; height: auto;
+    z-index: 3; color: #000; font-size: 1rem; font-weight: 600;
+    pointer-events: none;
+    text-align: center; letter-spacing: 1px;
+}
+
+/* 4층: 프레임 (최상단 고정) */
+.frame-overlay { object-fit: contain; z-index: 4; pointer-events: none; }
+
+/* 버튼 및 효과 */
 .controls { width: 100%; display: flex; flex-direction: column; gap: 12px; }
 button {
     width: 100%; height: 62px; border-radius: 50px;
@@ -67,10 +66,8 @@ button {
 .btn-secondary { background: #ff4757; color: #fff; }
 .btn-outline { background: #fff; color: #111; border: 1.5px solid #111; }
 
-/* 플래시 효과 */
 .flash-effect::after {
     content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: white; z-index: 20; animation: flash-anim 0.3s ease-out forwards;
 }
 @keyframes flash-anim { 0% { opacity: 1; } 100% { opacity: 0; } }
-
