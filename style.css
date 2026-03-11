@@ -10,6 +10,14 @@ body {
     min-height: 100vh;
 }
 
+@font-face {
+    font-family: 'Mona';
+    src: url('https://cdn.jsdelivr.net/gh/monada-dev/mona-font/dist/Mona-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; /* 폰트 로딩 중에도 텍스트를 보이게 함 */
+}
+
 .container {
     width: 100%; max-width: 480px;
     padding: 40px 25px; text-align: center;
@@ -73,3 +81,4 @@ button { width: 100%; height: 62px; border-radius: 50px; font-size: 1.15rem; fon
     background: white; z-index: 20; animation: flash-anim 0.3s ease-out forwards;
 }
 @keyframes flash-anim { 0% { opacity: 1; } 100% { opacity: 0; } }
+
