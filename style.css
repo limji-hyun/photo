@@ -54,7 +54,7 @@ body {
     width: 100%; 
     height: auto;
     z-index: 10;
-    color: #ffffff;
+    color: #000;
     font-family: "Mona", sans-serif; /* Mona 폰트 적용 */
     font-size: 0.85rem; /* 요청하신 크기 */
     font-weight: 500;
@@ -83,6 +83,7 @@ button {
     background: white; z-index: 20; animation: flash-anim 0.3s ease-out forwards;
 }
 @keyframes flash-anim { 0% { opacity: 1; } 100% { opacity: 0; } }
+
 
 
 
