@@ -53,7 +53,6 @@ enterBtn.addEventListener('click', async () => {
 snapBtn.addEventListener('click', () => {
     if (!frameImg.complete) return;
 
-    // 플래시 애니메이션
     photoZone.classList.add('flash-effect');
     setTimeout(() => photoZone.classList.remove('flash-effect'), 300);
 
@@ -61,7 +60,6 @@ snapBtn.addEventListener('click', () => {
     canvas.width = 1200;
     canvas.height = 1600;
 
-    // 비디오 크롭 계산
     const vW = video.videoWidth;
     const vH = video.videoHeight;
     const tR = 3 / 4;
@@ -69,31 +67,36 @@ snapBtn.addEventListener('click', () => {
     if (vW / vH > tR) { sw = vH * tR; sh = vH; sx = (vW - sw) / 2; sy = 0; }
     else { sw = vW; sh = vW / tR; sx = 0; sy = (vH - sh) / 2; }
 
-    // 1. 비디오 좌우 반전 합성 (거울 모드 구현)
+    // 1. 비디오 좌우 반전 합성
     ctx.save();
     ctx.translate(canvas.width, 0);
     ctx.scale(-1, 1);
     ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
     ctx.restore();
     
-    // 2. 프레임 합성 (정방향)
+    // 2. 프레임 합성
     ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
 
-    // 3. 날짜 텍스트 합성 (이미지 파일에 영구 기록)
+    // 3. 날짜 텍스트 합성 (폰트 및 위치 동기화)
     const currentDateTime = getFormattedDateTime();
-    ctx.fillStyle = "black";
-    ctx.font = " 38px mona";
+    
+    // 폰트 설정 (웹폰트가 로드된 상태여야 함)
+    ctx.font = "500 42px Mona, sans-serif"; 
+    ctx.fillStyle = "white";
     ctx.textAlign = "center";
-    ctx.shadowBlur = 6;
-    // 화면상의 25px 위치와 유사하도록 캔버스 높이(1600) 기준 100px 지점에 배치
-    ctx.fillText(currentDateTime, canvas.width / 2, 100);
+    ctx.shadowBlur = 0; // 그림자 제거
+    
+    /* 계산: 화면 높이가 약 640px일 때 17px 위치라면, 
+       저장용 1600px 높이에서는 약 42px 지점이 동일한 비율의 위치입니다.
+    */
+    ctx.fillText(currentDateTime, canvas.width / 2, 65); 
 
-    // 4. 미리보기 표시
     finalImageData = canvas.toDataURL('image/png');
     
     previewImg.onload = () => {
-        video.style.opacity = "0"; // 비디오를 숨김 (레이아웃 유지)
+        video.style.opacity = "0"; 
         previewImg.style.display = "block";
+        dateOverlay.style.display = "block"; 
         snapBtn.style.display = "none";
         previewControls.style.display = "flex";
     };
@@ -118,4 +121,5 @@ saveBtn.addEventListener('click', () => {
     link.download = `emtekinc_booth_${Date.now()}.png`;
     link.click();
 });
+
 
