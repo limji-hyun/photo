@@ -48,14 +48,14 @@ body {
 /* 3층: 날짜 (항상 동일 위치) */
 .date-overlay {
     position: absolute; 
-    top: 25px; /* 상단 여백 약간 늘림 */
+    top: 20px; /* 상단 여백 약간 늘림 */
     left: 0; 
     width: 100%; 
     height: auto;
     z-index: 10; /* 가장 높은 우선순위 */
     color: #000 !important;
-    font-size: 1rem; 
-    font-weight: 400;
+    font-size: 0.8rem; 
+    font-weight: 300;
     pointer-events: none;
     text-align: center; 
     letter-spacing: 1px;
@@ -80,4 +80,5 @@ button {
     background: white; z-index: 20; animation: flash-anim 0.3s ease-out forwards;
 }
 @keyframes flash-anim { 0% { opacity: 1; } 100% { opacity: 0; } }
+
 
