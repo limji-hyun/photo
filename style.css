@@ -1,5 +1,4 @@
 /* 리셋 및 초기화 */
-@import url("https://cdn.jsdelivr.net/gh/MonadABXY/mona-font/web/mona.css");
 html { box-sizing: border-box; -webkit-text-size-adjust: 100%; }
 *, *:before, *:after { box-sizing: inherit; }
 
@@ -83,6 +82,7 @@ button {
     background: white; z-index: 20; animation: flash-anim 0.3s ease-out forwards;
 }
 @keyframes flash-anim { 0% { opacity: 1; } 100% { opacity: 0; } }
+
 
 
 
