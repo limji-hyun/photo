@@ -81,10 +81,9 @@ snapBtn.addEventListener('click', () => {
 
     // 3. 날짜 텍스트 합성 (이미지 파일에 영구 기록)
     const currentDateTime = getFormattedDateTime();
-    ctx.fillStyle = "white";
-    ctx.font = "bold 45px Arial";
+    ctx.fillStyle = "black";
+    ctx.font = " 38px mona";
     ctx.textAlign = "center";
-    ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
     ctx.shadowBlur = 6;
     // 화면상의 25px 위치와 유사하도록 캔버스 높이(1600) 기준 100px 지점에 배치
     ctx.fillText(currentDateTime, canvas.width / 2, 100);
@@ -119,3 +118,4 @@ saveBtn.addEventListener('click', () => {
     link.download = `emtekinc_booth_${Date.now()}.png`;
     link.click();
 });
+
