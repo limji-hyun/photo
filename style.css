@@ -1,4 +1,4 @@
-/* 리셋 및 초기화 */
+/* 기본 리셋 */
 html { box-sizing: border-box; -webkit-text-size-adjust: 100%; }
 *, *:before, *:after { box-sizing: inherit; }
 
@@ -15,7 +15,7 @@ body {
     padding: 40px 25px; text-align: center;
 }
 
-/* 화면 전환 */
+/* 홈 화면 */
 #home-screen { display: flex; flex-direction: column; justify-content: center; height: 80vh; }
 .logo { font-size: 4.5rem; margin-bottom: 20px; }
 #home-screen h1 { font-size: 2.2rem; margin-bottom: 12px; font-weight: 800; }
@@ -23,7 +23,7 @@ body {
 
 .booth-title { font-size: 1.2rem; margin-bottom: 20px; font-weight: 700; color: #111; }
 
-/* 촬영 박스 레이어 핵심 (3:4 비율) */
+/* 촬영 박스 (3:4 비율) */
 .photo-wrapper { width: 100%; margin-bottom: 30px; }
 .photo-zone {
     position: relative; width: 100%; aspect-ratio: 3 / 4;
@@ -36,59 +36,40 @@ body {
     width: 100%; height: 100%;
 }
 
-/* 1층: 비디오 (거울 모드) */
+/* 비디오 (거울 모드) */
 #video { object-fit: cover; z-index: 1; transform: scaleX(-1); }
 
-/* 2층: 미리보기 (촬영 데이터 출력용, CSS 반전 없음) */
-.preview-overlay { 
-    object-fit: cover; z-index: 2; display: none; 
-    background-color: #000;
-}
-
-/* 3층: 날짜 (항상 동일 위치) */
+/* 날짜 레이어 (검은색 글씨 설정) */
 .date-overlay {
     position: absolute; 
     top: 17px; /* 요청하신 위치 */
     left: 0; 
     width: 100%; 
-    height: auto;
-    z-index: 10;
-    color: #000;
-    font-family: "Mona", sans-serif; /* Mona 폰트 적용 */
+    z-index: 10; 
+    color: #000000 !important; /* 검은색 */
+    font-family: "Mona", sans-serif;
     font-size: 0.85rem; /* 요청하신 크기 */
     font-weight: 500;
     text-shadow: none; /* 그림자 제거 */
     pointer-events: none;
     text-align: center;
     letter-spacing: 0.5px;
-    display: block !important;
 }
 
-/* 4층: 프레임 (최상단 고정) */
+/* 프레임 및 미리보기 */
 .frame-overlay { object-fit: contain; z-index: 4; pointer-events: none; }
+.preview-overlay { object-fit: cover; z-index: 2; display: none; background-color: #000; }
 
-/* 버튼 및 효과 */
+/* 버튼 스타일 */
 .controls { width: 100%; display: flex; flex-direction: column; gap: 12px; }
-button {
-    width: 100%; height: 62px; border-radius: 50px;
-    font-size: 1.15rem; font-weight: 700; border: none; cursor: pointer;
-}
+button { width: 100%; height: 62px; border-radius: 50px; font-size: 1.15rem; font-weight: 700; border: none; cursor: pointer; }
 .btn-primary { background: #111; color: #fff; }
 .btn-secondary { background: #ff4757; color: #fff; }
 .btn-outline { background: #fff; color: #111; border: 1.5px solid #111; }
 
+/* 플래시 효과 */
 .flash-effect::after {
     content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: white; z-index: 20; animation: flash-anim 0.3s ease-out forwards;
 }
 @keyframes flash-anim { 0% { opacity: 1; } 100% { opacity: 0; } }
-
-
-
-
-
-
-
-
-
-
