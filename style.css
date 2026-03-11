@@ -49,18 +49,20 @@ body {
 /* 3층: 날짜 (항상 동일 위치) */
 .date-overlay {
     position: absolute; 
-    top: 5%; /* 상단 여백 약간 늘림 */
+    top: 17px; /* 요청하신 위치 */
     left: 0; 
     width: 100%; 
     height: auto;
-    z-index: 10; /* 가장 높은 우선순위 */
-    color: #000 !important;
-    font-size: 0.85rem; 
-    font-weight: 400;
+    z-index: 10;
+    color: #ffffff;
+    font-family: "Mona", sans-serif; /* Mona 폰트 적용 */
+    font-size: 0.85rem; /* 요청하신 크기 */
+    font-weight: 500;
+    text-shadow: none; /* 그림자 제거 */
     pointer-events: none;
-    text-align: center; 
-    letter-spacing: 1px;
-    display: block !important; /* 강제 표시 */
+    text-align: center;
+    letter-spacing: 0.5px;
+    display: block !important;
 }
 
 /* 4층: 프레임 (최상단 고정) */
@@ -81,6 +83,7 @@ button {
     background: white; z-index: 20; animation: flash-anim 0.3s ease-out forwards;
 }
 @keyframes flash-anim { 0% { opacity: 1; } 100% { opacity: 0; } }
+
 
 
 
