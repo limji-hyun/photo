@@ -31,7 +31,7 @@ setInterval(() => {
 }, 1000);
 dateOverlay.innerText = getFormattedDateTime();
 
-// [2] 입장하기: 카메라 연결
+// [2] 입장하기
 enterBtn.addEventListener('click', async () => {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -45,7 +45,7 @@ enterBtn.addEventListener('click', async () => {
             boothScreen.style.display = "block";
         };
     } catch (err) {
-        alert("카메라를 켤 수 없습니다. 브라우저 권한과 HTTPS 환경을 확인해주세요.");
+        alert("카메라를 켤 수 없습니다.");
     }
 });
 
@@ -67,29 +67,24 @@ snapBtn.addEventListener('click', () => {
     if (vW / vH > tR) { sw = vH * tR; sh = vH; sx = (vW - sw) / 2; sy = 0; }
     else { sw = vW; sh = vW / tR; sx = 0; sy = (vH - sh) / 2; }
 
-    // 1. 비디오 좌우 반전 합성
+    // 비디오 좌우 반전 합성
     ctx.save();
     ctx.translate(canvas.width, 0);
     ctx.scale(-1, 1);
     ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
     ctx.restore();
     
-    // 2. 프레임 합성
+    // 프레임 합성
     ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
 
-    // 3. 날짜 텍스트 합성 (폰트 및 위치 동기화)
+    // 날짜 텍스트 합성 (검은색 글씨)
     const currentDateTime = getFormattedDateTime();
-    
-    // 폰트 설정 (웹폰트가 로드된 상태여야 함)
-    ctx.font = "500 42px Mona, sans-serif"; 
-    ctx.fillStyle = black";
+    ctx.font = "500 42px Mona, sans-serif"; // 1200x1600 해상도 비례 크기
+    ctx.fillStyle = "#000000"; // 검은색
     ctx.textAlign = "center";
     ctx.shadowBlur = 0; // 그림자 제거
-    
-    /* 계산: 화면 높이가 약 640px일 때 17px 위치라면, 
-       저장용 1600px 높이에서는 약 42px 지점이 동일한 비율의 위치입니다.
-    */
-    ctx.fillText(currentDateTime, canvas.width / 2, 65); 
+    // 상단 17px 비율에 맞춘 캔버스 y좌표 (약 65~70px)
+    ctx.fillText(currentDateTime, canvas.width / 2, 70);
 
     finalImageData = canvas.toDataURL('image/png');
     
@@ -121,6 +116,3 @@ saveBtn.addEventListener('click', () => {
     link.download = `emtekinc_booth_${Date.now()}.png`;
     link.click();
 });
-
-
-
