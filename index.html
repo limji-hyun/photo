@@ -14,7 +14,7 @@
             <header>
                 <div class="logo">📸</div>
                 <h1>emtekinc Booth</h1>
-                <p>특별한 순간을 기록하세요.<br>프레임과 함께 사진을 찍어보세요.</p>
+                <p>특별한 순간을 기록하세요.</p>
             </header>
             <div class="home-controls">
                 <button id="enter-btn" class="btn-primary">입장하기</button>
@@ -22,9 +22,7 @@
         </div>
 
         <div id="booth-screen" class="screen" style="display:none;">
-            <header>
-                <h2 class="booth-title">📸 emtekinc Booth 📸</h2>
-            </header>
+            <header><h2 class="booth-title">📸 emtekinc Booth 📸</h2></header>
 
             <div class="photo-wrapper">
                 <div class="photo-zone" id="photo-zone">
@@ -37,7 +35,6 @@
 
             <div class="controls">
                 <button id="snap-btn" class="btn-secondary">사진 찍기</button>
-                
                 <div id="preview-controls" style="display:none; width:100%; gap:12px; flex-direction:column;">
                     <button id="save-btn" class="btn-primary">이대로 저장하기</button>
                     <button id="retake-btn" class="btn-outline">다시 찍기</button>
@@ -47,7 +44,6 @@
     </div>
 
     <canvas id="canvas" style="display:none;"></canvas>
-
     <script src="./script.js"></script>
 </body>
 </html>
