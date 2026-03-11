@@ -82,7 +82,7 @@ snapBtn.addEventListener('click', () => {
     
     // 폰트 설정 (웹폰트가 로드된 상태여야 함)
     ctx.font = "500 42px Mona, sans-serif"; 
-    ctx.fillStyle = "white";
+    ctx.fillStyle = black";
     ctx.textAlign = "center";
     ctx.shadowBlur = 0; // 그림자 제거
     
@@ -121,5 +121,6 @@ saveBtn.addEventListener('click', () => {
     link.download = `emtekinc_booth_${Date.now()}.png`;
     link.click();
 });
+
 
 
