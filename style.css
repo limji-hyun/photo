@@ -1,21 +1,30 @@
+/* 리셋 및 모바일 최적화 */
 html { box-sizing: border-box; -webkit-text-size-adjust: 100%; }
 *, *:before, *:after { box-sizing: inherit; }
 
 body {
-    margin: 0; padding: 0; background-color: #fdfdfd;
+    margin: 0; padding: 0;
+    background-color: #fdfdfd;
     font-family: -apple-system, sans-serif;
-    display: flex; justify-content: center; min-height: 100vh;
+    display: flex; justify-content: center;
+    min-height: 100vh;
 }
 
-.container { width: 100%; max-width: 480px; padding: 40px 25px; text-align: center; }
+.container {
+    width: 100%; max-width: 480px;
+    padding: 40px 25px; text-align: center;
+}
 
+/* 홈 화면 */
 #home-screen { display: flex; flex-direction: column; justify-content: center; height: 80vh; }
 .logo { font-size: 4.5rem; margin-bottom: 20px; }
 #home-screen h1 { font-size: 2.2rem; margin-bottom: 12px; font-weight: 800; }
 #home-screen p { color: #777; margin-bottom: 50px; font-size: 1.1rem; line-height: 1.6; }
 
-.booth-title { font-size: 1.2rem; margin-bottom: 20px; font-weight: 700; }
+/* 부스 화면 타이틀 */
+.booth-title { font-size: 1.2rem; margin-bottom: 20px; font-weight: 700; color: #111; }
 
+/* 촬영 영역 (3:4 비율) */
 .photo-wrapper { width: 100%; margin-bottom: 30px; }
 .photo-zone {
     position: relative; width: 100%; aspect-ratio: 3 / 4;
@@ -23,26 +32,44 @@ body {
     display: grid; box-shadow: 0 15px 40px rgba(0,0,0,0.12);
 }
 
-#video, .preview-overlay, .frame-overlay { grid-area: 1 / 1 / 2 / 2; width: 100%; height: 100%; }
+#video, .preview-overlay, .frame-overlay {
+    grid-area: 1 / 1 / 2 / 2;
+    width: 100%; height: 100%;
+}
 
-/* 실시간 카메라: 거울 모드 */
-#video { object-fit: cover; z-index: 1; transform: scaleX(-1); -webkit-transform: scaleX(-1); }
+/* 거울 모드 설정 */
+#video { object-fit: cover; z-index: 1; transform: scaleX(-1); }
 
-/* 미리보기: 이미 캔버스에서 뒤집혔으므로 여기서는 반전하지 않음 */
-.preview-overlay { object-fit: contain; z-index: 4; display: none; background-color: #000; }
+/* 날짜 레이어 (프레임 위, 미리보기 아래) */
+.date-overlay {
+    position: absolute; top: 25px; left: 0; width: 100%;
+    z-index: 5; color: #fff; font-size: 1.1rem; font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5); pointer-events: none;
+    text-align: center; letter-spacing: 1px;
+}
 
-/* 프레임: contain을 사용하여 프레임 전체가 다 보이도록 설정 */
+/* 프레임 설정 */
 .frame-overlay { object-fit: contain; z-index: 3; pointer-events: none; }
 
-button { width: 100%; height: 62px; border-radius: 50px; font-size: 1.15rem; font-weight: 700; border: none; cursor: pointer; }
+/* 미리보기 설정 (최상단) */
+.preview-overlay { 
+    object-fit: contain; z-index: 10; display: none; 
+    background-color: #000;
+}
+
+/* 버튼 스타일 */
+.controls { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+button {
+    width: 100%; height: 62px; border-radius: 50px;
+    font-size: 1.15rem; font-weight: 700; border: none; cursor: pointer;
+}
 .btn-primary { background: #111; color: #fff; }
 .btn-secondary { background: #ff4757; color: #fff; }
 .btn-outline { background: #fff; color: #111; border: 1.5px solid #111; }
 
+/* 플래시 효과 */
 .flash-effect::after {
     content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: white; z-index: 10; animation: flash-anim 0.3s ease-out forwards;
+    background: white; z-index: 20; animation: flash-anim 0.3s ease-out forwards;
 }
 @keyframes flash-anim { 0% { opacity: 1; } 100% { opacity: 0; } }
-
-#preview-controls { flex-direction: column; gap: 12px; }
