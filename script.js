@@ -50,59 +50,60 @@ enterBtn.addEventListener('click', async () => {
 snapBtn.addEventListener('click', () => {
     if (!frameImg.complete) return;
 
-    // 플래시 효과
+    // 플래시 애니메이션 효과
     photoZone.classList.add('flash-effect');
     setTimeout(() => photoZone.classList.remove('flash-effect'), 300);
 
     const ctx = canvas.getContext('2d');
     
-    // 1. 캔버스 크기를 프레임의 실제 해상도로 고정 (매우 중요)
+    // 1. 캔버스 해상도를 3:4 표준 해상도로 고정
     canvas.width = 1200;
     canvas.height = 1600;
 
-    // 2. 카메라 영상 크롭 계산 (3:4 비율로 중앙 자르기)
+    // 2. 비디오 소스 크기 및 비율 계산
     const vW = video.videoWidth;
     const vH = video.videoHeight;
     const targetRatio = 3 / 4;
     
     let sW, sH, sX, sY;
 
+    // 비디오의 중앙을 3:4 비율로 자르기 위한 계산
     if (vW / vH > targetRatio) {
-        // 영상이 가로로 더 길 때
-        sH = vH;
         sW = vH * targetRatio;
+        sH = vH;
         sX = (vW - sW) / 2;
         sY = 0;
     } else {
-        // 영상이 세로로 더 길 때
         sW = vW;
         sH = vW / targetRatio;
         sX = 0;
         sY = (vH - sH) / 2;
     }
 
-    // 3. 비디오 그리기 (좌우 반전)
+    // 3. 배경 이미지(비디오) 그리기 (좌우 반전)
     ctx.save();
     ctx.translate(canvas.width, 0);
     ctx.scale(-1, 1);
     ctx.drawImage(video, sX, sY, sW, sH, 0, 0, canvas.width, canvas.height);
     ctx.restore();
     
-    // 4. 프레임 그리기 (이미지 경로가 img/frame.png인지 확인하세요)
+    // 4. 프레임 합성 (가장 중요: 좌표 0,0에서 캔버스 크기만큼 꽉 채우기)
+    // 이 부분이 어긋나면 프레임이 위나 아래로 쏠려 보입니다.
     ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
 
-    // 5. 날짜 합성
+    // 5. 날짜 합성 (Mona 폰트)
     const currentDateTime = getFormattedDateTime();
     ctx.font = "500 42px 'Mona', sans-serif";
     ctx.fillStyle = "#000000";
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
-    // 화면상의 17px 위치를 1600px 캔버스 비율에 맞게 계산 (약 70px)
+    // 상단 17px 위치 (1600px 해상도 비율 계산 시 약 70px 지점)
     ctx.fillText(currentDateTime, canvas.width / 2, 70);
 
-    // 6. 결과 출력
+    // 6. 결과 출력 및 미리보기 전환
     finalImageData = canvas.toDataURL('image/png');
     previewImg.src = finalImageData;
+    
     previewImg.onload = () => {
         video.style.opacity = "0";
         previewImg.style.display = "block";
@@ -129,5 +130,6 @@ saveBtn.addEventListener('click', () => {
     link.download = `emtekinc_booth_${Date.now()}.png`;
     link.click();
 });
+
 
 
