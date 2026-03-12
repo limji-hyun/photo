@@ -113,10 +113,15 @@ body { font-family: -apple-system, sans-serif; background-color: #000; }
     display: none; 
 }
 
-.frame-overlay { 
-    object-fit: fill; /* 중요: 프레임을 컨테이너에 꽉 맞춤 */
-    z-index: 4; 
-    pointer-events: none; 
+.frame-overlay {
+    position: absolute;
+    top: 0; /* 꼭 확인! */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill; /* 프레임이 박스에 꽉 차도록 설정 */
+    z-index: 4;
+    pointer-events: none;
 }
 
 .date-overlay {
@@ -144,6 +149,7 @@ button { width: 100%; height: 62px; border-radius: 50px; border: none; font-weig
 .btn-outline { background: #fff; color: #111; border: 1.5px solid #111; }
 .flash-effect::after { content: ""; position: absolute; inset: 0; background: white; z-index: 20; animation: flash-anim 0.3s forwards; }
 @keyframes flash-anim { from { opacity: 1; } to { opacity: 0; } }
+
 
 
 
