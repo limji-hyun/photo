@@ -68,14 +68,67 @@ body { font-family: -apple-system, sans-serif; background-color: #000; }
 
 /* [촬영 부스 스타일] */
 #booth-screen { 
-    background: #fff; height: 100vh; padding: 40px 25px; 
-    box-sizing: border-box; overflow-y: auto; 
+    background: #fff; 
+    min-height: 100vh; 
+    padding: 20px 25px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
 }
-.photo-zone { position: relative; width: 100%; aspect-ratio: 3/4; background: #000; overflow: hidden; display: grid; border-radius: 12px; }
-#video, .preview-overlay, .frame-overlay, .date-overlay { grid-area: 1/1/2/2; width: 100%; height: 100%; }
-#video { object-fit: cover; transform: scaleX(-1); z-index: 1; }
-.preview-overlay { object-fit: cover; z-index: 2; display: none; }
-.frame-overlay { object-fit: contain; z-index: 4; pointer-events: none; }
+
+.photo-wrapper { 
+    width: 100%; 
+    max-width: 400px; /* 모바일에서 너무 커지지 않게 조절 */
+    margin: 20px 0; 
+}
+
+.photo-zone {
+    position: relative; 
+    width: 100%; 
+    aspect-ratio: 3 / 4; /* 프레임 비율과 일치 */
+    background: #000; 
+    border-radius: 12px; 
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* 비디오와 프레임, 미리보기를 절대 위치로 겹침 */
+#video, .preview-overlay, .frame-overlay, .date-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#video { 
+    object-fit: cover; /* 화면을 꽉 채움 */
+    z-index: 1; 
+    transform: scaleX(-1); /* 거울 모드 */
+}
+
+.preview-overlay { 
+    object-fit: cover; 
+    z-index: 2; 
+    display: none; 
+}
+
+.frame-overlay { 
+    object-fit: fill; /* 중요: 프레임을 컨테이너에 꽉 맞춤 */
+    z-index: 4; 
+    pointer-events: none; 
+}
+
+.date-overlay {
+    z-index: 10;
+    color: #000000 !important;
+    font-family: 'Mona', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: center;
+    padding-top: 17px; /* 상단에서 17px 위치 */
+    pointer-events: none;
+}
 
 /* 날짜 스타일 유지 */
 .date-overlay {
@@ -91,5 +144,6 @@ button { width: 100%; height: 62px; border-radius: 50px; border: none; font-weig
 .btn-outline { background: #fff; color: #111; border: 1.5px solid #111; }
 .flash-effect::after { content: ""; position: absolute; inset: 0; background: white; z-index: 20; animation: flash-anim 0.3s forwards; }
 @keyframes flash-anim { from { opacity: 1; } to { opacity: 0; } }
+
 
 
