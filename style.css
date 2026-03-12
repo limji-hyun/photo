@@ -1,4 +1,4 @@
-/* 기본 리셋 */
+/* [기존 리셋 및 폰트 설정 동일] */
 html { box-sizing: border-box; -webkit-text-size-adjust: 100%; }
 *, *:before, *:after { box-sizing: inherit; }
 
@@ -15,23 +15,99 @@ body {
     src: url('https://cdn.jsdelivr.net/gh/monada-dev/mona-font/dist/Mona-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
-    font-display: swap; /* 폰트 로딩 중에도 텍스트를 보이게 함 */
+    font-display: swap;
 }
 
 .container {
     width: 100%; max-width: 480px;
-    padding: 40px 25px; text-align: center;
+    padding: 0; /* 배경을 꽉 채우기 위해 홈에서는 패딩 조절 가능 */
+    text-align: center;
 }
 
-/* 홈 화면 */
-#home-screen { display: flex; flex-direction: column; justify-content: center; height: 80vh; }
-.logo { font-size: 4.5rem; margin-bottom: 20px; }
-#home-screen h1 { font-size: 2.2rem; margin-bottom: 12px; font-weight: 800; }
-#home-screen p { color: #777; margin-bottom: 50px; font-size: 1.1rem; line-height: 1.6; }
+/* =========================================
+   [추가/수정] 홈 화면: 배경 및 애니메이션
+   ========================================= */
+#home-screen { 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
+    height: 100vh; 
+    position: relative;
+    overflow: hidden;
+    /* 배경 이미지 경로 수정 */
+    background: url('img/bg.jpg') no-repeat center center;
+    background-size: cover;
+}
+
+/* 타이틀 이미지 */
+.title-gif {
+    width: 80%;
+    max-width: 350px;
+    z-index: 5;
+    margin-bottom: 40px;
+}
+
+/* 비행선 공통 스타일 */
+.ship {
+    position: absolute;
+    width: 80px; /* 비행선 크기 조절 */
+    bottom: -100px; /* 화면 하단 밖에서 시작 */
+    opacity: 0;
+    z-index: 3;
+    pointer-events: none;
+}
+
+/* 비행선 1: 오른쪽에서 먼저 출발 */
+.ship1 {
+    right: 15%;
+    animation: flyUpAnimation 4s infinite ease-in;
+}
+
+/* 비행선 2: 왼쪽에서 1초 뒤 출발 */
+.ship2 {
+    left: 15%;
+    animation: flyUpAnimation 4s infinite ease-in;
+    animation-delay: 1s; /* 1초 뒤 시작 */
+}
+
+/* 하단에서 상단으로 날아가는 애니메이션 */
+@keyframes flyUpAnimation {
+    0% {
+        bottom: -100px;
+        opacity: 0;
+        transform: translateX(0) rotate(10deg);
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        bottom: 110vh; /* 화면 상단 밖으로 사라짐 */
+        opacity: 0;
+        transform: translateX(-20px) rotate(-10deg);
+    }
+}
+
+/* 입장 버튼 이미지 */
+.enter-btn-img {
+    width: 200px;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.2s;
+}
+.enter-btn-img:active { transform: scale(0.95); }
+
+
+/* =========================================
+   [촬영 부스 스타일]
+   ========================================= */
+#booth-screen { padding: 40px 25px; }
 
 .booth-title { font-size: 1.2rem; margin-bottom: 20px; font-weight: 700; color: #111; }
 
-/* 촬영 박스 (3:4 비율) */
 .photo-wrapper { width: 100%; margin-bottom: 30px; }
 .photo-zone {
     position: relative; width: 100%; aspect-ratio: 3 / 4;
@@ -44,42 +120,36 @@ body {
     width: 100%; height: 100%;
 }
 
-/* 비디오 (거울 모드) */
 #video { object-fit: cover; z-index: 1; transform: scaleX(-1); }
 
-/* 날짜 레이어 (검은색 글씨 설정) */
 .date-overlay {
     position: absolute;
-    top: 17px; /* 요청하신 상단 위치 */
+    top: 17px;
     left: 0;
     width: 100%;
     z-index: 10;
-    color: #000000 !important; /* 검정색 */
-    font-family: 'Mona', sans-serif; /* Mona 웹폰트 적용 */
-    font-size: 0.85rem; /* 요청하신 크기 */
+    color: #000000 !important;
+    font-family: 'Mona', sans-serif;
+    font-size: 0.85rem;
     font-weight: 500;
-    text-shadow: none; /* 그림자 제거 */
+    text-shadow: none;
     pointer-events: none;
     text-align: center;
     height: auto;
 }
 
-/* 프레임 및 미리보기 */
+/* 프레임 이미지 경로 주의 (HTML에서 img/frame.png로 수정 필요) */
 .frame-overlay { object-fit: contain; z-index: 4; pointer-events: none; }
 .preview-overlay { object-fit: cover; z-index: 2; display: none; background-color: #000; }
 
-/* 버튼 스타일 */
 .controls { width: 100%; display: flex; flex-direction: column; gap: 12px; }
 button { width: 100%; height: 62px; border-radius: 50px; font-size: 1.15rem; font-weight: 700; border: none; cursor: pointer; }
 .btn-primary { background: #111; color: #fff; }
 .btn-secondary { background: #ff4757; color: #fff; }
 .btn-outline { background: #fff; color: #111; border: 1.5px solid #111; }
 
-/* 플래시 효과 */
 .flash-effect::after {
     content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background: white; z-index: 20; animation: flash-anim 0.3s ease-out forwards;
 }
 @keyframes flash-anim { 0% { opacity: 1; } 100% { opacity: 0; } }
-
-
