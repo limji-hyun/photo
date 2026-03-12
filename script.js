@@ -116,11 +116,24 @@ snapBtn.addEventListener('click', () => {
 retakeBtn.addEventListener('click', () => {
     video.style.opacity = "1";
     previewImg.style.display = "none";
-    previewControls.style.display = "none";
-    snapBtn.style.display = "block";
+    
+    // 버튼 교체
+    previewControls.style.display = "none"; // btn3, btn4 숨기기
+    snapBtn.style.display = "block";       // btn2 보이기
+    
     finalImageData = null;
     previewImg.src = "";
 });
+
+// 촬영 성공 시 로직 보완
+// snapBtn 클릭 이벤트 마지막 부분
+previewImg.onload = () => {
+    video.style.opacity = "0";
+    previewImg.style.display = "block";
+    
+    snapBtn.style.display = "none";         // btn2 숨기기
+    previewControls.style.display = "flex"; // btn3, btn4 보이기
+};
 
 // [5] 저장하기
 saveBtn.addEventListener('click', () => {
@@ -130,6 +143,7 @@ saveBtn.addEventListener('click', () => {
     link.download = `emtekinc_booth_${Date.now()}.png`;
     link.click();
 });
+
 
 
 
