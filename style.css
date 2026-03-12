@@ -1,7 +1,7 @@
 /* 기본 리셋 및 확대 축소 방지 보조 */
 html, body { 
     margin: 0; padding: 0; width: 100%; height: 100%; 
-    overflow: hidden; touch-action: manipulation; 
+    overflow: hidden; touch-action: manipulation; /* 터치 지연 및 확대 방지 */
 }
 
 body { font-family: -apple-system, sans-serif; background-color: #000; }
@@ -15,69 +15,56 @@ body { font-family: -apple-system, sans-serif; background-color: #000; }
     background-size: cover;
     display: flex; justify-content: center; align-items: center;
     position: relative;
-    z-index: 1;
+    z-index: 1; /* 배경 레이어 */
 }
 
 .home-content {
     width: 100%; height: 100%;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    position: relative; z-index: 2;
+    position: relative; z-index: 2; /* 콘텐츠 레이어 */
 }
 
-/* 달 이미지 - 위치 적정화 */
+/* 달 이미지 */
 .moon-img {
     position: absolute;
-    top: 20%; /* 38%에서 위로 조금 조정 */
-    width: 120px; /* 고정 크기 추천 */
+    top: 38%;
+    width: 70%;
     z-index: 2;
 }
 
 /* 타이틀 로고 */
 .title-gif {
-    width: 60%; /* 너무 크지 않게 조절 */
-    max-width: 300px;
+    width: 100%;
+    max-width: 100%;
     z-index: 5;
     margin-bottom: 20px;
 }
 
-/* 비행선 - 애니메이션 추가 및 크기 수정 */
+/* 비행선 */
 .ship {
     position: absolute;
-    width: 60px; /* 이미지 크기에 맞게 고정 */
-    bottom: -100px; /* 하단 밖에서 시작 */
-    opacity: 0;
-    z-index: 3;
-    -webkit-transform: translateZ(0);
+    width:auto;
+    height:100%;
+    opacity: 1;
+    z-index: 1;
+    -webkit-transform: translateZ(0); /* 아이폰 가속 */
 }
 
 .ship1 {
-    right: 30px;
-    animation: flyUp 5s infinite linear;
+    right: 30px; /* 오른쪽 30px 여백 */    
 }
 
 .ship2 {
-    left: 30px;
-    animation: flyUp 5s infinite linear;
-    animation-delay: 1.5s; /* 1.5초 뒤 출발 */
+    left: 30px; /* 왼쪽 30px 여백 */
 }
 
-/* 비행선 상승 애니메이션 정의 */
-@keyframes flyUp {
-    0% { bottom: -100px; opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { bottom: 110vh; opacity: 0; }
-}
-
-/* 입장 버튼 - margin-top 수정 */
+/* 입장 버튼 */
 .enter-btn-img {
     width: 200px;
     cursor: pointer;
     z-index: 10;
-    margin-top: 40px; /* 150%는 너무 큽니다 */
-    transition: transform 0.1s;
+    margin-top: 150%;
 }
-.enter-btn-img:active { transform: scale(0.95); }
 
 /* [촬영 부스 스타일] */
 #booth-screen { 
@@ -87,26 +74,25 @@ body { font-family: -apple-system, sans-serif; background-color: #000; }
     display: flex; 
     flex-direction: column; 
     align-items: center;
-    box-sizing: border-box;
 }
 
 .photo-wrapper { 
     width: 100%; 
-    max-width: 400px;
+    max-width: 400px; /* 모바일에서 너무 커지지 않게 조절 */
     margin: 20px 0; 
 }
 
 .photo-zone {
     position: relative; 
     width: 100%; 
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 3 / 4; /* 프레임 비율과 일치 */
     background: #000; 
     border-radius: 12px; 
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-/* 요소 겹침 설정 */
+/* 비디오와 프레임, 미리보기를 절대 위치로 겹침 */
 #video, .preview-overlay, .frame-overlay, .date-overlay {
     position: absolute;
     top: 0;
@@ -115,11 +101,29 @@ body { font-family: -apple-system, sans-serif; background-color: #000; }
     height: 100%;
 }
 
-#video { object-fit: cover; z-index: 1; transform: scaleX(-1); }
-.preview-overlay { object-fit: cover; z-index: 2; display: none; }
-.frame-overlay { object-fit: fill; z-index: 4; pointer-events: none; }
+#video { 
+    object-fit: cover; /* 화면을 꽉 채움 */
+    z-index: 1; 
+    transform: scaleX(-1); /* 거울 모드 */
+}
 
-/* 날짜 스타일 통합 */
+.preview-overlay { 
+    object-fit: cover; 
+    z-index: 2; 
+    display: none; 
+}
+
+.frame-overlay {
+    position: absolute;
+    top: 0; /* 꼭 확인! */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill; /* 프레임이 박스에 꽉 차도록 설정 */
+    z-index: 4;
+    pointer-events: none;
+}
+
 .date-overlay {
     z-index: 10;
     color: #000000 !important;
@@ -127,35 +131,37 @@ body { font-family: -apple-system, sans-serif; background-color: #000; }
     font-size: 0.85rem;
     font-weight: 500;
     text-align: center;
-    padding-top: 17px; /* 요청하신 17px 위치 */
+    padding-top: 17px; /* 상단에서 17px 위치 */
     pointer-events: none;
 }
 
-.controls { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+/* 날짜 스타일 유지 */
+.date-overlay {
+    position: absolute; top: 10px; left: 0; width: 100%; z-index: 10;
+    color: #000000 !important; font-family: 'Mona', sans-serif;
+    font-size: 0.85rem; font-weight: 500; text-align: center;
+}
 
+.controls { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
 /* 버튼 이미지 공통 스타일 */
+
 .custom-btn {
-    width: 220px; 
+    width: 200px; /* 버튼 적정 크기 (조절 가능) */
     cursor: pointer;
     transition: transform 0.1s ease-in-out, opacity 0.2s;
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: transparent; /* 모바일 터치 시 파란 박스 제거 */
     display: block;
     margin: 0 auto;
 }
 
+/* 클릭/터치 시 꾹 눌리는 효과 */
 .custom-btn:active {
     transform: scale(0.92);
     opacity: 0.8;
 }
 
+/* 촬영 후 버튼들 간격 */
 #preview-controls .custom-btn {
     margin-bottom: 5px;
-}
-
-/* 플래시 효과 애니메이션 */
-.flash-effect::after {
-    content: ""; position: absolute; inset: 0;
-    background: white; z-index: 20; 
-    animation: flash-anim 0.3s forwards;
 }
 @keyframes flash-anim { from { opacity: 1; } to { opacity: 0; } }
