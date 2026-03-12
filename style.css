@@ -1,162 +1,103 @@
-/* [기존 리셋 및 폰트 설정 동일] */
-html { box-sizing: border-box; -webkit-text-size-adjust: 100%; }
-*, *:before, *:after { box-sizing: inherit; }
-
-body {
-    margin: 0; padding: 0;
-    background-color: #fdfdfd;
-    font-family: -apple-system, sans-serif;
-    display: flex; justify-content: center;
-    min-height: 100vh;
+/* 기본 리셋 및 확대 축소 방지 보조 */
+html, body { 
+    margin: 0; padding: 0; width: 100%; height: 100%; 
+    overflow: hidden; touch-action: manipulation; /* 터치 지연 및 확대 방지 */
 }
 
-@font-face {
-    font-family: 'Mona';
-    src: url('https://cdn.jsdelivr.net/gh/monada-dev/mona-font/dist/Mona-Regular.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
+body { font-family: -apple-system, sans-serif; background-color: #000; }
 
-.container {
-    width: 100%; max-width: 480px;
-    padding: 0; /* 배경을 꽉 채우기 위해 홈에서는 패딩 조절 가능 */
-    text-align: center;
-}
+.container { width: 100%; height: 100%; }
 
-/* 홈 화면 배경 수정 */
+/* [홈 화면] 배경 최하단 배치 */
 #home-screen {
-    width: 100%;
-    height: 100vh;
+    width: 100%; height: 100vh;
     background: url('img/bg.jpg') no-repeat center center;
     background-size: cover;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    display: flex; justify-content: center; align-items: center;
     position: relative;
-    overflow: hidden;
-    
-    /* 아이폰에서 배경 깜빡임 방지 */
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
+    z-index: 1; /* 배경 레이어 */
 }
 
-/* GIF 이미지 공통 (비행선 등) */
-.ship, .title-gif {
-    /* 아이폰에서 GIF 애니메이션이 부드럽게 돌아가도록 가속 부여 */
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -webkit-perspective: 1000;
-    perspective: 1000;
-    
-    /* 이미지 렌더링 최적화 */
-    image-rendering: -webkit-optimize-contrast;
+.home-content {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; z-index: 2; /* 콘텐츠 레이어 */
 }
 
-/* 비행선 공통 스타일 */
+/* 달 이미지: 타이틀보다 뒤, 배경보다 앞 */
+.moon-img {
+    position: absolute;
+    top: 15%;
+    width: 100px;
+    z-index: 2;
+}
+
+/* 타이틀 로고: 크기 축소 */
+.title-gif {
+    width: 55%; /* 기존 80%에서 축소 */
+    max-width: 250px;
+    z-index: 5;
+    margin-bottom: 20px;
+}
+
+/* 비행선: 양옆 30px 여백 및 수직 상승 */
 .ship {
     position: absolute;
-    width: 80px; /* 비행선 크기 조절 */
-    bottom: -100px; /* 화면 하단 밖에서 시작 */
+    width: 60px;
+    bottom: -100px; /* 하단 밖 대기 */
     opacity: 0;
-    z-index: 3;
-    pointer-events: none;
+    z-index: 4;
+    -webkit-transform: translateZ(0); /* 아이폰 가속 */
 }
 
-/* 비행선 1: 오른쪽에서 먼저 출발 */
 .ship1 {
-    right: 15%;
-    animation: flyUpAnimation 4s infinite ease-in;
+    right: 30px; /* 오른쪽 30px 여백 */
+    animation: flyVertical 5s infinite linear;
 }
 
-/* 비행선 2: 왼쪽에서 1초 뒤 출발 */
 .ship2 {
-    left: 15%;
-    animation: flyUpAnimation 4s infinite ease-in;
-    animation-delay: 1s; /* 1초 뒤 시작 */
+    left: 30px; /* 왼쪽 30px 여백 */
+    animation: flyVertical 5s infinite linear;
+    animation-delay: 1.5s; /* 1.5초 뒤 출발 */
 }
 
-/* 하단에서 상단으로 날아가는 애니메이션 */
-@keyframes flyUpAnimation {
-    0% {
-        bottom: -100px;
-        opacity: 0;
-        transform: translateX(0) rotate(10deg);
-    }
-    10% {
-        opacity: 1;
-    }
-    90% {
-        opacity: 1;
-    }
-    100% {
-        bottom: 110vh; /* 화면 상단 밖으로 사라짐 */
-        opacity: 0;
-        transform: translateX(-20px) rotate(-10deg);
-    }
+@keyframes flyVertical {
+    0% { bottom: -100px; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { bottom: 110vh; opacity: 0; }
 }
 
-/* 입장 버튼 이미지 */
+/* 입장 버튼: 크기 유지 */
 .enter-btn-img {
-    width: 200px;
+    width: 220px;
     cursor: pointer;
     z-index: 10;
-    transition: transform 0.2s;
-}
-.enter-btn-img:active { transform: scale(0.95); }
-
-
-/* =========================================
-   [촬영 부스 스타일]
-   ========================================= */
-#booth-screen { padding: 40px 25px; }
-
-.booth-title { font-size: 1.2rem; margin-bottom: 20px; font-weight: 700; color: #111; }
-
-.photo-wrapper { width: 100%; margin-bottom: 30px; }
-.photo-zone {
-    position: relative; width: 100%; aspect-ratio: 3 / 4;
-    background: #000; border-radius: 12px; overflow: hidden;
-    display: grid; box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    margin-top: 50px;
 }
 
-#video, .preview-overlay, .frame-overlay, .date-overlay {
-    grid-area: 1 / 1 / 2 / 2;
-    width: 100%; height: 100%;
+/* [촬영 부스 스타일] */
+#booth-screen { 
+    background: #fff; height: 100vh; padding: 40px 25px; 
+    box-sizing: border-box; overflow-y: auto; 
 }
-
-#video { object-fit: cover; z-index: 1; transform: scaleX(-1); }
-
-.date-overlay {
-    position: absolute;
-    top: 17px;
-    left: 0;
-    width: 100%;
-    z-index: 10;
-    color: #000000 !important;
-    font-family: 'Mona', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 500;
-    text-shadow: none;
-    pointer-events: none;
-    text-align: center;
-    height: auto;
-}
-
-/* 프레임 이미지 경로 주의 (HTML에서 img/frame.png로 수정 필요) */
+.photo-zone { position: relative; width: 100%; aspect-ratio: 3/4; background: #000; overflow: hidden; display: grid; border-radius: 12px; }
+#video, .preview-overlay, .frame-overlay, .date-overlay { grid-area: 1/1/2/2; width: 100%; height: 100%; }
+#video { object-fit: cover; transform: scaleX(-1); z-index: 1; }
+.preview-overlay { object-fit: cover; z-index: 2; display: none; }
 .frame-overlay { object-fit: contain; z-index: 4; pointer-events: none; }
-.preview-overlay { object-fit: cover; z-index: 2; display: none; background-color: #000; }
 
-.controls { width: 100%; display: flex; flex-direction: column; gap: 12px; }
-button { width: 100%; height: 62px; border-radius: 50px; font-size: 1.15rem; font-weight: 700; border: none; cursor: pointer; }
+/* 날짜 스타일 유지 */
+.date-overlay {
+    position: absolute; top: 17px; left: 0; width: 100%; z-index: 10;
+    color: #000000 !important; font-family: 'Mona', sans-serif;
+    font-size: 0.85rem; font-weight: 500; text-align: center;
+}
+
+.controls { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+button { width: 100%; height: 62px; border-radius: 50px; border: none; font-weight: 700; cursor: pointer; }
 .btn-primary { background: #111; color: #fff; }
 .btn-secondary { background: #ff4757; color: #fff; }
 .btn-outline { background: #fff; color: #111; border: 1.5px solid #111; }
-
-.flash-effect::after {
-    content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: white; z-index: 20; animation: flash-anim 0.3s ease-out forwards;
-}
-@keyframes flash-anim { 0% { opacity: 1; } 100% { opacity: 0; } }
-
+.flash-effect::after { content: ""; position: absolute; inset: 0; background: white; z-index: 20; animation: flash-anim 0.3s forwards; }
+@keyframes flash-anim { from { opacity: 1; } to { opacity: 0; } }
