@@ -58,14 +58,6 @@ body { font-family: -apple-system, sans-serif; background-color: #000; }
     left: 30px; /* 왼쪽 30px 여백 */
 }
 
-/* 입장 버튼 */
-.custom-btn {
-    width: 200px;
-    cursor: pointer;
-    z-index: 10;
-    margin-top: 150%;
-}
-
 /* [촬영 부스 스타일] */
 #booth-screen { 
     background: #fff; 
@@ -150,10 +142,16 @@ body { font-family: -apple-system, sans-serif; background-color: #000; }
 }
 .custom-btn-sub:active { transform: scale(0.95); opacity: 0.8; }
 
-#enter-btn { margin-top: 40px; z-index: 10; }
+#enter-btn {
+    width: 200px;
+    cursor: pointer;
+    z-index: 10;
+    margin-top: 150%;
+}
 
 .flash-effect::after { content: ""; position: absolute; inset: 0; background: white; z-index: 20; animation: flash-anim 0.3s forwards; }
 @keyframes flash-anim { from { opacity: 1; } to { opacity: 0; } }
+
 
 
 
