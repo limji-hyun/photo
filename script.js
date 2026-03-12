@@ -35,17 +35,14 @@ dateOverlay.innerText = getFormattedDateTime();
 enterBtn.addEventListener('click', async () => {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 960 } },
+            video: { facingMode: "user", width: { ideal: 1280 } },
             audio: false
         });
         video.srcObject = stream;
-        video.onloadedmetadata = () => {
-            video.play();
-            homeScreen.style.display = "none";
-            boothScreen.style.display = "block";
-        };
+        document.getElementById('home-screen').style.display = "none";
+        document.getElementById('booth-screen').style.display = "block";
     } catch (err) {
-        alert("카메라를 켤 수 없습니다. HTTPS 환경이나 권한을 확인해주세요.");
+        alert("카메라 권한이 필요합니다.");
     }
 });
 
@@ -117,3 +114,4 @@ saveBtn.addEventListener('click', () => {
     link.download = `emtekinc_booth_${Date.now()}.png`;
     link.click();
 });
+
