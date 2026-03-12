@@ -31,7 +31,7 @@ setInterval(() => {
 }, 1000);
 dateOverlay.innerText = getFormattedDateTime();
 
-// [2] 입장하기
+// [2] 입장하기: 카메라 연결 (이미지 클릭)
 enterBtn.addEventListener('click', async () => {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
@@ -45,14 +45,15 @@ enterBtn.addEventListener('click', async () => {
             boothScreen.style.display = "block";
         };
     } catch (err) {
-        alert("카메라를 켤 수 없습니다.");
+        alert("카메라를 켤 수 없습니다. HTTPS 환경이나 권한을 확인해주세요.");
     }
 });
 
-// [3] 사진 촬영 및 합성
+// [3] 사진 촬영 및 합성 (날짜 위치 및 폰트 유지)
 snapBtn.addEventListener('click', () => {
     if (!frameImg.complete) return;
 
+    // 플래시 애니메이션
     photoZone.classList.add('flash-effect');
     setTimeout(() => photoZone.classList.remove('flash-effect'), 300);
 
@@ -67,24 +68,24 @@ snapBtn.addEventListener('click', () => {
     if (vW / vH > tR) { sw = vH * tR; sh = vH; sx = (vW - sw) / 2; sy = 0; }
     else { sw = vW; sh = vW / tR; sx = 0; sy = (vH - sh) / 2; }
 
-    // 비디오 좌우 반전 합성
+    // 비디오 반전해서 그리기
     ctx.save();
     ctx.translate(canvas.width, 0);
     ctx.scale(-1, 1);
     ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
     ctx.restore();
     
-    // 프레임 합성
+    // 프레임 합성 (정방향)
     ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
 
-    // 날짜 텍스트 합성 (검은색 글씨)
-const currentDateTime = getFormattedDateTime();
-    ctx.font = "500 42px Mona, sans-serif"; // 캔버스용 폰트 설정
-    ctx.fillStyle = "#000000"; // 검정색
+    // 날짜 텍스트 합성 (Mona 폰트, 검은색, 위치 유지)
+    const currentDateTime = getFormattedDateTime();
+    // 캔버스 크기(1200) 기준 폰트 크기
+    ctx.font = "500 42px Mona, sans-serif";
+    ctx.fillStyle = "#000000"; // 검은색
     ctx.textAlign = "center";
-    ctx.textBaseline = "top";
     ctx.shadowBlur = 0; // 그림자 제거
-    // 상단 17px 비율에 맞춘 캔버스 y좌표 (약 65~70px)
+    // 상단 top: 17px 비율에 맞춘 캔버스 좌표 (약 65px~70px)
     ctx.fillText(currentDateTime, canvas.width / 2, 70);
 
     finalImageData = canvas.toDataURL('image/png');
@@ -92,9 +93,8 @@ const currentDateTime = getFormattedDateTime();
     previewImg.onload = () => {
         video.style.opacity = "0"; 
         previewImg.style.display = "block";
-        dateOverlay.style.display = "block"; 
         snapBtn.style.display = "none";
-        previewControls.style.display = "flex";
+        document.getElementById('preview-controls').style.display = "flex";
     };
     previewImg.src = finalImageData;
 });
@@ -117,4 +117,3 @@ saveBtn.addEventListener('click', () => {
     link.download = `emtekinc_booth_${Date.now()}.png`;
     link.click();
 });
-
