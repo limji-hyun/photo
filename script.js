@@ -50,50 +50,65 @@ enterBtn.addEventListener('click', async () => {
 snapBtn.addEventListener('click', () => {
     if (!frameImg.complete) return;
 
-    // 플래시 애니메이션
+    // 플래시 효과
     photoZone.classList.add('flash-effect');
     setTimeout(() => photoZone.classList.remove('flash-effect'), 300);
 
     const ctx = canvas.getContext('2d');
+    
+    // 1. 캔버스 크기를 프레임의 실제 해상도로 고정 (매우 중요)
     canvas.width = 1200;
     canvas.height = 1600;
 
+    // 2. 카메라 영상 크롭 계산 (3:4 비율로 중앙 자르기)
     const vW = video.videoWidth;
     const vH = video.videoHeight;
-    const tR = 3 / 4;
-    let sx, sy, sw, sh;
-    if (vW / vH > tR) { sw = vH * tR; sh = vH; sx = (vW - sw) / 2; sy = 0; }
-    else { sw = vW; sh = vW / tR; sx = 0; sy = (vH - sh) / 2; }
+    const targetRatio = 3 / 4;
+    
+    let sW, sH, sX, sY;
 
-    // 비디오 반전해서 그리기
+    if (vW / vH > targetRatio) {
+        // 영상이 가로로 더 길 때
+        sH = vH;
+        sW = vH * targetRatio;
+        sX = (vW - sW) / 2;
+        sY = 0;
+    } else {
+        // 영상이 세로로 더 길 때
+        sW = vW;
+        sH = vW / targetRatio;
+        sX = 0;
+        sY = (vH - sH) / 2;
+    }
+
+    // 3. 비디오 그리기 (좌우 반전)
     ctx.save();
     ctx.translate(canvas.width, 0);
     ctx.scale(-1, 1);
-    ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(video, sX, sY, sW, sH, 0, 0, canvas.width, canvas.height);
     ctx.restore();
     
-    // 프레임 합성 (정방향)
+    // 4. 프레임 그리기 (이미지 경로가 img/frame.png인지 확인하세요)
     ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
 
-    // 날짜 텍스트 합성 (Mona 폰트, 검은색, 위치 유지)
+    // 5. 날짜 합성
     const currentDateTime = getFormattedDateTime();
-    // 캔버스 크기(1200) 기준 폰트 크기
-    ctx.font = "500 42px Mona, sans-serif";
-    ctx.fillStyle = "#000000"; // 검은색
+    ctx.font = "500 42px 'Mona', sans-serif";
+    ctx.fillStyle = "#000000";
     ctx.textAlign = "center";
-    ctx.shadowBlur = 0; // 그림자 제거
-    // 상단 top: 17px 비율에 맞춘 캔버스 좌표 (약 65px~70px)
+    ctx.textBaseline = "top";
+    // 화면상의 17px 위치를 1600px 캔버스 비율에 맞게 계산 (약 70px)
     ctx.fillText(currentDateTime, canvas.width / 2, 70);
 
+    // 6. 결과 출력
     finalImageData = canvas.toDataURL('image/png');
-    
+    previewImg.src = finalImageData;
     previewImg.onload = () => {
-        video.style.opacity = "0"; 
+        video.style.opacity = "0";
         previewImg.style.display = "block";
         snapBtn.style.display = "none";
-        document.getElementById('preview-controls').style.display = "flex";
+        previewControls.style.display = "flex";
     };
-    previewImg.src = finalImageData;
 });
 
 // [4] 다시 찍기
@@ -114,4 +129,5 @@ saveBtn.addEventListener('click', () => {
     link.download = `emtekinc_booth_${Date.now()}.png`;
     link.click();
 });
+
 
