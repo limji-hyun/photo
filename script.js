@@ -98,7 +98,7 @@ snapBtn.addEventListener('click', () => {
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
     // 상단 17px 위치 (1600px 해상도 비율 계산 시 약 70px 지점)
-    ctx.fillText(currentDateTime, canvas.width / 2, 70);
+    ctx.fillText(currentDateTime, canvas.width / 2, 40);
 
     // 6. 결과 출력 및 미리보기 전환
     finalImageData = canvas.toDataURL('image/png');
@@ -130,6 +130,7 @@ saveBtn.addEventListener('click', () => {
     link.download = `emtekinc_booth_${Date.now()}.png`;
     link.click();
 });
+
 
 
 
