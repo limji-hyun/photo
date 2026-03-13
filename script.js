@@ -73,7 +73,7 @@ snapBtn.addEventListener('click', () => {
     ctx.fillStyle = "#000000";
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
-    ctx.fillText(getFormattedDateTime(), canvas.width / 2, 60);
+    ctx.fillText(getFormattedDateTime(), canvas.width / 2, 70);
 
     finalImageData = canvas.toDataURL('image/png');
     previewImg.src = finalImageData;
@@ -103,5 +103,6 @@ saveBtn.addEventListener('click', () => {
     link.download = `photo_${Date.now()}.png`;
     link.click();
 });
+
 
 
