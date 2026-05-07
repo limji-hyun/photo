@@ -7,6 +7,7 @@ const snapBtn = document.getElementById('snap-btn');
 const saveBtn = document.getElementById('save-btn');
 const retakeBtn = document.getElementById('retake-btn');
 const enterBtn = document.getElementById('enter-btn');
+const cameraToggleBtn = document.getElementById('camera-toggle-btn');
 const previewControls = document.getElementById('preview-controls');
 const photoZone = document.getElementById('photo-zone');
 
@@ -82,6 +83,7 @@ snapBtn.addEventListener('click', () => {
         previewImg.style.display = "block";
         // 버튼 전환
         snapBtn.style.display = "none";
+        cameraToggleBtn.style.display = "none";
         previewControls.style.display = "flex";
     };
 });
@@ -91,6 +93,7 @@ retakeBtn.addEventListener('click', () => {
     video.style.opacity = "1";
     previewImg.style.display = "none";
     snapBtn.style.display = "block";
+    cameraToggleBtn.style.display = "block";
     previewControls.style.display = "none";
     finalImageData = null;
 });
